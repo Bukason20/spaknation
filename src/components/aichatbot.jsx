@@ -67,25 +67,29 @@ function AIChatbot() {
     }
   }, [isOpen]);
 
-  const callClaude = async (msgHistory) => {
+  const callAI = async (msgHistory) => {
     const apiMessages = msgHistory
       .filter((m) => m.role !== "system")
       .map((m) => ({ role: m.role, content: m.content }));
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true",
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-3.5-turbo", // free/cheap model
+          messages: [
+            { role: "system", content: SPAKNATION_SYSTEM_PROMPT },
+            ...apiMessages,
+          ],
+          max_tokens: 300,
+        }),
       },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        system: SPAKNATION_SYSTEM_PROMPT,
-        messages: apiMessages,
-      }),
-    });
+    );
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
@@ -93,9 +97,10 @@ function AIChatbot() {
     }
 
     const data = await response.json();
+
     return (
-      data?.content?.[0]?.text ||
-      "Sorry, I had trouble responding. Please try again or email hello@spaknation.com!"
+      data?.choices?.[0]?.message?.content ||
+      "Sorry, something went wrong. Please email hello@spaknation.com"
     );
   };
 
@@ -110,7 +115,7 @@ function AIChatbot() {
     setIsLoading(true);
 
     try {
-      const reply = await callClaude(newMessages);
+      const reply = await callAI(newMessages);
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
       if (!isOpen) setHasUnread(true);
     } catch (err) {
@@ -282,7 +287,7 @@ function AIChatbot() {
             <Send size={15} color="#fff" />
           </button>
         </div>
-        <div className="chat-powered">Powered by Claude AI</div>
+        <div className="chat-powered">Powered by AI</div>
       </div>
 
       {/* Toggle Button */}
