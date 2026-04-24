@@ -39,6 +39,25 @@ Zero compromise on child protection. Safe, structured environment.
 
 Be warm, encouraging, and enthusiastic. Keep responses concise (2–4 sentences max). If asked something you don't know, suggest contacting hello@spaknation.com. Always encourage parents to enroll their children.`;
 
+// ✅ NEW: fallback responses
+const getFallbackResponse = (text) => {
+  const msg = text.toLowerCase();
+
+  if (msg.includes("program")) {
+    return "We offer Ballet, Acrobatics, Gymnastics, Hip Hop, Music, Singing, Taekwondo, Swimming, and Public Speaking 😊 Which one interests your child?";
+  }
+
+  if (msg.includes("enroll") || msg.includes("register")) {
+    return "You can enroll your child by contacting us at hello@spaknation.com. We'd love to help your child discover their greatness! ✨";
+  }
+
+  if (msg.includes("schedule") || msg.includes("time") || msg.includes("day")) {
+    return "Our classes run Wednesdays & Fridays (4–6pm) and Saturdays (9am–2pm). We also offer holiday and online classes!";
+  }
+
+  return "Thanks for your message 😊 For more details, please contact hello@spaknation.com and our team will assist you.";
+};
+
 function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -81,7 +100,7 @@ function AIChatbot() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "openai/gpt-3.5-turbo", // free/cheap model
+          model: "openai/gpt-3.5-turbo",
           messages: [
             { role: "system", content: SPAKNATION_SYSTEM_PROMPT },
             ...apiMessages,
@@ -92,8 +111,7 @@ function AIChatbot() {
     );
 
     if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err?.error?.message || `HTTP ${response.status}`);
+      throw new Error(`HTTP ${response.status}`);
     }
 
     const data = await response.json();
@@ -119,14 +137,15 @@ function AIChatbot() {
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
       if (!isOpen) setHasUnread(true);
     } catch (err) {
+      // ✅ FALLBACK kicks in here
+      const fallback = getFallbackResponse(text);
+
       setMessages((prev) => [
         ...prev,
-        {
-          role: "assistant",
-          content:
-            "Oops! Something went wrong. Please reach out to us at hello@spaknation.com 😊",
-        },
+        { role: "assistant", content: fallback },
       ]);
+
+      if (!isOpen) setHasUnread(true);
     } finally {
       setIsLoading(false);
     }
@@ -147,9 +166,7 @@ function AIChatbot() {
 
   return (
     <div className="chat-widget">
-      {/* Chat Window */}
       <div className={`chat-window ${isOpen ? "visible" : "hidden"}`}>
-        {/* Header */}
         <div className="chat-header">
           <div className="chat-avatar">
             <Bot size={20} color="#fff" />
@@ -188,25 +205,11 @@ function AIChatbot() {
               </span>
             </div>
           </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            style={{
-              background: "rgba(255,255,255,0.2)",
-              border: "none",
-              cursor: "pointer",
-              borderRadius: "50%",
-              width: 30,
-              height: 30,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <button onClick={() => setIsOpen(false)}>
             <Minimize2 size={14} color="#fff" />
           </button>
         </div>
 
-        {/* Messages */}
         <div className="chat-messages">
           {messages.map((msg, i) => (
             <div
@@ -219,7 +222,9 @@ function AIChatbot() {
                 </div>
               )}
               <div
-                className={`msg-bubble ${msg.role === "user" ? "msg-user" : "msg-bot"}`}
+                className={`msg-bubble ${
+                  msg.role === "user" ? "msg-user" : "msg-bot"
+                }`}
               >
                 {msg.content}
               </div>
@@ -230,15 +235,7 @@ function AIChatbot() {
               <div className="bot-icon">
                 <Sparkles size={12} color="#fff" />
               </div>
-              <div
-                className="msg-bubble msg-bot"
-                style={{
-                  display: "flex",
-                  gap: 4,
-                  alignItems: "center",
-                  padding: "12px 16px",
-                }}
-              >
+              <div className="msg-bubble msg-bot">
                 <div className="typing-dot" />
                 <div className="typing-dot" />
                 <div className="typing-dot" />
@@ -248,7 +245,6 @@ function AIChatbot() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Questions */}
         {messages.length <= 1 && (
           <div className="quick-btns">
             {QUICK_QUESTIONS.map((q) => (
@@ -263,7 +259,6 @@ function AIChatbot() {
           </div>
         )}
 
-        {/* Input */}
         <div className="chat-input-row">
           <textarea
             ref={inputRef}
@@ -271,12 +266,7 @@ function AIChatbot() {
             rows={1}
             placeholder="Ask about programs, enrollment..."
             value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              e.target.style.height = "auto";
-              e.target.style.height =
-                Math.min(e.target.scrollHeight, 90) + "px";
-            }}
+            onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
           />
           <button
@@ -287,15 +277,15 @@ function AIChatbot() {
             <Send size={15} color="#fff" />
           </button>
         </div>
+
         <div className="chat-powered">Powered by AI</div>
       </div>
 
-      {/* Toggle Button */}
       <button className="chat-toggle" onClick={() => setIsOpen((o) => !o)}>
         {isOpen ? (
           <X size={24} color="#fff" />
         ) : (
-          <MessageCircle size={26} color="#fff" fill="rgba(255,255,255,0.3)" />
+          <MessageCircle size={26} color="#fff" />
         )}
         {hasUnread && !isOpen && <div className="chat-unread">1</div>}
       </button>

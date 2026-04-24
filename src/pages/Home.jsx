@@ -1128,7 +1128,7 @@ const Home = () => {
                 {
                   icon: MapPin,
                   label: "Visit Us",
-                  value: "Lagos, Nigeria",
+                  value: "Port Harcourt, Nigeria",
                   color: "#16A34A",
                   bg: "#F0FFF4",
                 },
