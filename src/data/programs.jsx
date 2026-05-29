@@ -10,6 +10,7 @@ const Programs = [
     accent: "#9333EA",
     iconBg: "#F3E8FF",
     tag: "",
+    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=75",
   },
   {
     icon: Zap,
@@ -20,6 +21,7 @@ const Programs = [
     accent: "#E53935",
     iconBg: "#FFEBEE",
     tag: "Most Popular",
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=75",
   },
   {
     icon: Star,
@@ -30,6 +32,7 @@ const Programs = [
     accent: "#16A34A",
     iconBg: "#DCFCE7",
     tag: "",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=75",
   },
   {
     icon: Zap,
@@ -40,6 +43,7 @@ const Programs = [
     accent: "#F57F17",
     iconBg: "#FFF3E0",
     tag: "",
+    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=75",
   },
   {
     icon: Music,
@@ -50,6 +54,7 @@ const Programs = [
     accent: "#D97706",
     iconBg: "#FEF3C7",
     tag: "",
+    image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&q=75",
   },
   {
     icon: Music,
@@ -60,6 +65,7 @@ const Programs = [
     accent: "#DB2777",
     iconBg: "#FCE7F3",
     tag: "",
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=75",
   },
   {
     icon: Trophy,
@@ -70,6 +76,7 @@ const Programs = [
     accent: "#0891B2",
     iconBg: "#CFFAFE",
     tag: "",
+    image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&q=75",
   },
   {
     icon: Waves,
@@ -80,6 +87,7 @@ const Programs = [
     accent: "#2563EB",
     iconBg: "#DBEAFE",
     tag: "",
+    image: "https://images.unsplash.com/photo-1530549387789-4c87622acb6e?w=600&q=75",
   },
   {
     icon: Users,
@@ -90,6 +98,7 @@ const Programs = [
     accent: "#65A30D",
     iconBg: "#ECFCCB",
     tag: "Leadership",
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=75",
   },
 ];
 

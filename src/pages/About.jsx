@@ -461,169 +461,86 @@ const About = () => {
             <div style={{ position: "relative" }}>
               <div
                 style={{
-                  background: "linear-gradient(135deg,#FFF0F0,#FFF8E7)",
                   borderRadius: 32,
-                  padding: "48px 40px",
                   border: "2px solid #FFE0D0",
                   position: "relative",
                   overflow: "hidden",
+                  height: 520,
+                  boxShadow: "0 24px 80px rgba(229,57,53,0.15)",
                 }}
               >
+                <img
+                  src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?w=800&q=80"
+                  alt="Dance instructor and choreographer — Frank Robert, Founder of Spaknation"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
                 <div
                   style={{
                     position: "absolute",
-                    top: 0,
-                    right: 0,
-                    width: 180,
-                    height: 180,
+                    inset: 0,
                     background:
-                      "radial-gradient(circle,rgba(229,57,53,0.08) 0%,transparent 70%)",
-                    borderRadius: "50%",
+                      "linear-gradient(to top,rgba(20,20,20,0.88) 0%,rgba(20,20,20,0.3) 45%,transparent 70%)",
                   }}
                 />
-                <div style={{ position: "relative", zIndex: 2 }}>
-                  {/* Avatar */}
-                  <div
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg,#E53935,#F57F17)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: 24,
-                      boxShadow: "0 12px 40px rgba(229,57,53,0.35)",
-                    }}
-                  >
-                    <span
-                      className="bebas"
-                      style={{
-                        fontSize: "2.5rem",
-                        color: "#fff",
-                        letterSpacing: 2,
-                      }}
-                    >
-                      FR
-                    </span>
-                  </div>
-
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: "32px",
+                    zIndex: 2,
+                  }}
+                >
                   <div
                     className="bebas"
                     style={{
-                      fontSize: "2.5rem",
-                      color: "#1a1a1a",
+                      fontSize: "2.2rem",
+                      color: "#fff",
                       letterSpacing: 2,
                       lineHeight: 1,
                     }}
                   >
-                    FRANK
-                    <br />
-                    ROBERT
+                    FRANK ROBERT
                   </div>
                   <div
                     style={{
-                      fontSize: "0.82rem",
+                      fontSize: "0.78rem",
                       fontWeight: 700,
-                      color: "#E53935",
+                      color: "#F9A825",
                       textTransform: "uppercase",
                       letterSpacing: "0.12em",
-                      marginTop: 8,
-                      marginBottom: 20,
+                      marginTop: 6,
+                      marginBottom: 14,
                     }}
                   >
                     Founder & Creative Director
                   </div>
-
-                  <p
-                    style={{
-                      color: "#666",
-                      fontSize: "0.9rem",
-                      lineHeight: 1.75,
-                      marginBottom: 24,
-                    }}
-                  >
-                    Happily married to Lilian Robert, his wife and Spaknation
-                    partner. Together, they've built one of Nigeria's most
-                    respected performing arts institutions for children.
-                  </p>
-
-                  <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                    {[
-                      "25+ Years Experience",
-                      "Father of Three",
-                      "Nigeria's Top Kids Coach",
-                    ].map((b) => (
-                      <span
-                        key={b}
-                        style={{
-                          fontSize: "0.72rem",
-                          fontWeight: 700,
-                          color: "#E53935",
-                          background: "#FFF0F0",
-                          borderRadius: 100,
-                          padding: "5px 14px",
-                          border: "1.5px solid #FFCDD2",
-                        }}
-                      >
-                        {b}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Stats */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 16,
-                      marginTop: 28,
-                    }}
-                  >
-                    {[
-                      { n: "25+", l: "Years of Experience", color: "#E53935" },
-                      { n: "500+", l: "Children Trained", color: "#F57F17" },
-                      { n: "200K+", l: "TikTok Followers", color: "#16A34A" },
-                      {
-                        n: "2,000+",
-                        l: "Kids at Police Games",
-                        color: "#2563EB",
-                      },
-                    ].map((s) => (
-                      <div
-                        key={s.l}
-                        style={{
-                          background: "#fff",
-                          borderRadius: 16,
-                          padding: "16px",
-                          border: "2px solid #F5F5F5",
-                        }}
-                      >
-                        <div
-                          className="bebas"
-                          style={{
-                            fontSize: "1.8rem",
-                            color: s.color,
-                            lineHeight: 1,
-                          }}
-                        >
-                          {s.n}
-                        </div>
-                        <div
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {["25+ Years", "Father of Three", "Top Kids Coach"].map(
+                      (b) => (
+                        <span
+                          key={b}
                           style={{
                             fontSize: "0.68rem",
-                            fontWeight: 600,
-                            color: "#888",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.06em",
-                            marginTop: 4,
-                            lineHeight: 1.3,
+                            fontWeight: 700,
+                            color: "#fff",
+                            background: "rgba(255,255,255,0.15)",
+                            borderRadius: 100,
+                            padding: "4px 12px",
+                            border: "1px solid rgba(255,255,255,0.25)",
+                            backdropFilter: "blur(4px)",
                           }}
                         >
-                          {s.l}
-                        </div>
-                      </div>
-                    ))}
+                          {b}
+                        </span>
+                      ),
+                    )}
                   </div>
                 </div>
               </div>

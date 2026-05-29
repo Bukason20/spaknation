@@ -219,7 +219,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Right Visual */}
+          {/* Right Visual — Hero Image */}
           <div
             className="hide-mobile"
             style={{
@@ -232,70 +232,95 @@ const Home = () => {
           >
             <div
               className="float-anim"
-              style={{ position: "relative", zIndex: 2 }}
+              style={{ position: "relative", zIndex: 2, width: "100%" }}
             >
               <div
                 style={{
-                  width: 300,
-                  height: 300,
-                  borderRadius: "50%",
-                  background:
-                    "linear-gradient(135deg,rgba(229,57,53,0.07),rgba(245,127,23,0.07))",
+                  borderRadius: 32,
+                  overflow: "hidden",
+                  boxShadow: "0 24px 80px rgba(229,57,53,0.18)",
                   border: "3px solid rgba(229,57,53,0.12)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  position: "relative",
+                  height: 440,
                 }}
               >
-                <div style={{ textAlign: "center" }}>
+                <img
+                  src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=900&q=80"
+                  alt="Spaknation kids performing on stage"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top,rgba(26,26,26,0.55) 0%,transparent 55%)",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 20,
+                    left: 20,
+                    right: 20,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
                   <div
                     style={{
-                      width: 90,
-                      height: 90,
+                      width: 40,
+                      height: 40,
                       borderRadius: "50%",
                       background: "linear-gradient(135deg,#E53935,#F57F17)",
-                      margin: "0 auto 12px",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      boxShadow: "0 12px 40px rgba(229,57,53,0.4)",
+                      flexShrink: 0,
                     }}
                   >
-                    <Sparkles size={38} color="#fff" />
+                    <Sparkles size={18} color="#fff" />
+                  </div>
+                  <div>
+                    <div
+                      className="bebas"
+                      style={{
+                        fontSize: "1.1rem",
+                        color: "#fff",
+                        letterSpacing: 2,
+                        lineHeight: 1,
+                      }}
+                    >
+                      SPAKNATION
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.68rem",
+                        color: "rgba(255,255,255,0.75)",
+                        fontWeight: 600,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Excellence in Every Step
+                    </div>
                   </div>
                   <div
-                    className="bebas"
                     style={{
-                      fontSize: "1.6rem",
-                      color: "#1a1a1a",
-                      letterSpacing: 3,
-                    }}
-                  >
-                    SPAKNATION
-                  </div>
-                  <div
-                    style={{
+                      marginLeft: "auto",
                       display: "flex",
-                      gap: 4,
-                      justifyContent: "center",
-                      marginTop: 6,
+                      gap: 3,
                     }}
                   >
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={12} fill="#F9A825" color="#F9A825" />
+                      <Star key={i} size={11} fill="#F9A825" color="#F9A825" />
                     ))}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.68rem",
-                      color: "#888",
-                      marginTop: 6,
-                      fontWeight: 600,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Excellence in Every Step
                   </div>
                 </div>
               </div>
@@ -307,21 +332,21 @@ const Home = () => {
                 label: "Acrobatics",
                 color: "#E53935",
                 bg: "#FFF0F0",
-                style: { top: "5%", left: "0%" },
+                style: { top: "-14px", left: "-14px" },
               },
               {
                 icon: Music,
                 label: "Music",
                 color: "#F57F17",
                 bg: "#FFF8E7",
-                style: { top: "5%", right: "0%", left: "auto" },
+                style: { top: "-14px", right: "-14px", left: "auto" },
               },
               {
                 icon: Star,
                 label: "Gymnastics",
                 color: "#16A34A",
                 bg: "#F0FFF4",
-                style: { bottom: "15%", left: "0%", top: "auto" },
+                style: { bottom: "-14px", left: "-14px", top: "auto" },
               },
               {
                 icon: Waves,
@@ -329,8 +354,8 @@ const Home = () => {
                 color: "#2563EB",
                 bg: "#EFF6FF",
                 style: {
-                  bottom: "15%",
-                  right: "0%",
+                  bottom: "-14px",
+                  right: "-14px",
                   left: "auto",
                   top: "auto",
                 },
@@ -345,11 +370,11 @@ const Home = () => {
                     ...item.style,
                     background: item.bg,
                     borderRadius: 16,
-                    padding: "12px 16px",
+                    padding: "10px 14px",
                     display: "flex",
                     alignItems: "center",
                     gap: 8,
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
                     border: `2px solid ${item.color}22`,
                     whiteSpace: "nowrap",
                     zIndex: 3,
@@ -357,8 +382,8 @@ const Home = () => {
                 >
                   <div
                     style={{
-                      width: 32,
-                      height: 32,
+                      width: 30,
+                      height: 30,
                       borderRadius: 10,
                       background: `${item.color}18`,
                       display: "flex",
@@ -366,11 +391,11 @@ const Home = () => {
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={16} color={item.color} />
+                    <Icon size={15} color={item.color} />
                   </div>
                   <span
                     style={{
-                      fontSize: "0.78rem",
+                      fontSize: "0.75rem",
                       fontWeight: 700,
                       color: "#1a1a1a",
                     }}
@@ -723,7 +748,40 @@ const Home = () => {
                 >
                   <div
                     style={{
-                      height: 6,
+                      position: "relative",
+                      height: 160,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <img
+                      src={prog.image}
+                      alt={`${prog.title} at Spaknation`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                        transition: "transform 0.4s ease",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.06)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: `linear-gradient(to top,${prog.accent}cc 0%,transparent 60%)`,
+                        opacity: 0.55,
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      height: 4,
                       background: `linear-gradient(90deg,${prog.accent},${prog.accent}88)`,
                     }}
                   />
@@ -1331,6 +1389,158 @@ const Home = () => {
           </div>
         </div>
       </section>
+      {/* ===== GALLERY ===== */}
+      <section style={{ padding: "100px 0", background: "#111" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <div
+              className="section-tag"
+              style={{
+                background: "rgba(249,168,37,0.12)",
+                color: "#F9A825",
+                borderColor: "rgba(249,168,37,0.3)",
+              }}
+            >
+              <Sparkles size={12} /> In Action
+            </div>
+            <h2
+              className="bebas"
+              style={{
+                fontSize: "clamp(2.5rem,5vw,4.5rem)",
+                color: "#fff",
+                lineHeight: 0.95,
+                letterSpacing: 1,
+              }}
+            >
+              OUR STUDENTS
+              <br />
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#E53935,#F57F17,#F9A825)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                IN ACTION
+              </span>
+            </h2>
+            <p
+              style={{
+                color: "#888",
+                fontSize: "1rem",
+                marginTop: 14,
+                maxWidth: 440,
+                margin: "14px auto 0",
+              }}
+            >
+              Every class. Every rehearsal. Every breakthrough moment — captured.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3,1fr)",
+              gap: 16,
+            }}
+            className="gallery-grid"
+          >
+            {[
+              {
+                src: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=700&q=75",
+                alt: "Kids performing on stage",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=700&q=75",
+                alt: "Acrobatics training",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=700&q=75",
+                alt: "Ballet dance class",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=700&q=75",
+                alt: "Hip hop dance performance",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1530549387789-4c87622acb6e?w=700&q=75",
+                alt: "Swimming competition training",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=700&q=75",
+                alt: "Taekwondo sparring practice",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=700&q=75",
+                alt: "Singing and vocal coaching",
+              },
+              {
+                src: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=700&q=75",
+                alt: "Public speaking workshop",
+              },
+            ].map((img, i) => (
+              <div
+                key={i}
+                style={{
+                  borderRadius: 18,
+                  overflow: "hidden",
+                  position: "relative",
+                  height: 220,
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.querySelector("img").style.transform =
+                    "scale(1.08)";
+                  e.currentTarget.querySelector(".gallery-overlay").style.opacity = "1";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.querySelector("img").style.transform =
+                    "scale(1)";
+                  e.currentTarget.querySelector(".gallery-overlay").style.opacity = "0";
+                }}
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                    transition: "transform 0.45s ease",
+                  }}
+                />
+                <div
+                  className="gallery-overlay"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top,rgba(229,57,53,0.7) 0%,transparent 60%)",
+                    opacity: 0,
+                    transition: "opacity 0.35s ease",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    padding: "16px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      color: "#fff",
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    {img.alt}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== FOOTER ===== */}
       <footer style={{ background: "#1a1a1a", padding: "60px 0 32px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>

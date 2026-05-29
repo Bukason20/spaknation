@@ -30,6 +30,7 @@ const ALL_PROGRAMS = [
     border: "#E9D5FF",
     iconBg: "#F3E8FF",
     tag: "",
+    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=75",
   },
   {
     icon: Zap,
@@ -47,6 +48,7 @@ const ALL_PROGRAMS = [
     border: "#FFCDD2",
     iconBg: "#FFEBEE",
     tag: "Most Popular",
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=75",
   },
   {
     icon: Star,
@@ -64,6 +66,7 @@ const ALL_PROGRAMS = [
     border: "#A7F3D0",
     iconBg: "#DCFCE7",
     tag: "",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=75",
   },
   {
     icon: Zap,
@@ -81,6 +84,7 @@ const ALL_PROGRAMS = [
     border: "#FFE082",
     iconBg: "#FFF3E0",
     tag: "",
+    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&q=75",
   },
   {
     icon: Music,
@@ -98,6 +102,7 @@ const ALL_PROGRAMS = [
     border: "#FDE68A",
     iconBg: "#FEF3C7",
     tag: "",
+    image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&q=75",
   },
   {
     icon: Mic,
@@ -115,6 +120,7 @@ const ALL_PROGRAMS = [
     border: "#FBCFE8",
     iconBg: "#FCE7F3",
     tag: "",
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=75",
   },
   {
     icon: Trophy,
@@ -132,6 +138,7 @@ const ALL_PROGRAMS = [
     border: "#A5F3FC",
     iconBg: "#CFFAFE",
     tag: "",
+    image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&q=75",
   },
   {
     icon: Waves,
@@ -149,6 +156,7 @@ const ALL_PROGRAMS = [
     border: "#BFDBFE",
     iconBg: "#DBEAFE",
     tag: "",
+    image: "https://images.unsplash.com/photo-1530549387789-4c87622acb6e?w=600&q=75",
   },
   {
     icon: Users,
@@ -166,6 +174,7 @@ const ALL_PROGRAMS = [
     border: "#D9F99D",
     iconBg: "#ECFCCB",
     tag: "Leadership",
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=75",
   },
 ];
 
@@ -349,7 +358,34 @@ const ProgramsPage = () => {
                 >
                   <div
                     style={{
-                      height: 6,
+                      position: "relative",
+                      height: 180,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <img
+                      src={prog.image}
+                      alt={`${prog.title} at Spaknation`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                        transition: "transform 0.4s ease",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: `linear-gradient(to top,${prog.accent}cc 0%,transparent 55%)`,
+                        opacity: 0.5,
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      height: 4,
                       background: `linear-gradient(90deg,${prog.accent},${prog.accent}88)`,
                     }}
                   />
