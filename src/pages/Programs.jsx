@@ -4,212 +4,14 @@ import {
   ArrowRight,
   Calendar,
   CheckCircle,
-  Mic,
   Sparkles,
   Star,
   Play,
   X,
 } from "lucide-react";
-import { Music, Users, Waves, Zap, Trophy } from "lucide-react";
 import Navbar from "../components/Navbar";
 import AIChatbot from "../components/aichatbot";
-
-// ─── REPLACE THESE IMAGE URLS WITH YOUR FACEBOOK PHOTOS ─────────────────────
-// Each image should show kids actually doing that discipline.
-// Ideal size: landscape, at least 600×350px.
-
-const ALL_PROGRAMS = [
-  {
-    icon: Star,
-    title: "Ballet",
-    tagline: "Grace, Discipline & Classical Foundation",
-    desc: "Classical ballet forms the foundation of all great performers. Students develop poise, strength, coordination, and an understanding of music through structured classical technique.",
-    highlights: [
-      "Classical technique & posture",
-      "Strength & flexibility training",
-      "Musical interpretation",
-      "Recital & stage performance",
-    ],
-    accent: "#9333EA",
-    bg: "#FDF4FF",
-    border: "#E9D5FF",
-    iconBg: "#F3E8FF",
-    tag: "",
-    image:
-      "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=600&q=80",
-    // TODO: Replace with a photo of your ballet students from Facebook
-    videoUrl: "", // Add your Facebook/YouTube video URL here
-  },
-  {
-    icon: Zap,
-    title: "Acrobatics",
-    tagline: "High-Energy Stunts & Artistry",
-    desc: "High-energy tumbling, flips, and acrobatic artistry taught with world-class precision. Our signature program builds fearless performers who command any stage.",
-    highlights: [
-      "Tumbling & flips",
-      "Acrobatic stunts",
-      "Partner work",
-      "Stage performance readiness",
-    ],
-    accent: "#E53935",
-    bg: "#FFF0F0",
-    border: "#FFCDD2",
-    iconBg: "#FFEBEE",
-    tag: "Most Popular",
-    image:
-      "https://images.unsplash.com/photo-1547153760-18fc86324498?w=600&q=80",
-    // TODO: Replace with your acrobatics students mid-flip from Facebook
-    videoUrl: "",
-  },
-  {
-    icon: Star,
-    title: "Gymnastics",
-    tagline: "Strength, Flexibility & Discipline",
-    desc: "Structured gymnastics programs that build strength, flexibility, balance, and mental discipline. Students progress through levels in a safe, encouraging environment.",
-    highlights: [
-      "Floor routines",
-      "Balance & coordination",
-      "Progressive level system",
-      "Competition preparation",
-    ],
-    accent: "#16A34A",
-    bg: "#F0FFF4",
-    border: "#A7F3D0",
-    iconBg: "#DCFCE7",
-    tag: "",
-    image:
-      "https://images.unsplash.com/photo-1545959570-a94084071b5d?w=600&q=80",
-    // TODO: Replace with gymnastics training photo from Facebook
-    videoUrl: "",
-  },
-  {
-    icon: Zap,
-    title: "Hip Hop",
-    tagline: "Urban Dance & Street Performance",
-    desc: "Freestyle expression meets technical urban dance styles. Students master breaking, popping, locking, and contemporary hip hop — learning to move with personality and confidence.",
-    highlights: [
-      "Breaking & popping",
-      "Freestyle techniques",
-      "Urban choreography",
-      "Battle & showcase performance",
-    ],
-    accent: "#F57F17",
-    bg: "#FFF8E7",
-    border: "#FFE082",
-    iconBg: "#FFF3E0",
-    tag: "",
-    image:
-      "https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?w=600&q=80",
-    // TODO: Replace with hip hop class or performance photo from Facebook
-    videoUrl: "",
-  },
-  {
-    icon: Music,
-    title: "Music",
-    tagline: "Rhythm, Theory & Musical Expression",
-    desc: "Vocal training, rhythm, and musical expression woven into every performance. Students learn to feel and understand music, becoming complete performers who shine on any stage.",
-    highlights: [
-      "Music theory basics",
-      "Rhythm & timing",
-      "Instrumental introduction",
-      "Ensemble performance",
-    ],
-    accent: "#D97706",
-    bg: "#FFFBEB",
-    border: "#FDE68A",
-    iconBg: "#FEF3C7",
-    tag: "",
-    image:
-      "https://images.unsplash.com/photo-1576758454260-00aa3e6efdf6?w=600&q=80",
-    // TODO: Replace with music class photo from Facebook
-    videoUrl: "",
-  },
-  {
-    icon: Mic,
-    title: "Singing",
-    tagline: "Vocal Coaching & Performance",
-    desc: "Individual and group vocal coaching designed to unlock each child's unique voice. Students develop breath control, pitch accuracy, and stage presence through guided performance training.",
-    highlights: [
-      "Breath control & technique",
-      "Pitch & harmony training",
-      "Solo & group performance",
-      "Microphone & stage confidence",
-    ],
-    accent: "#DB2777",
-    bg: "#FFF0FA",
-    border: "#FBCFE8",
-    iconBg: "#FCE7F3",
-    tag: "",
-    image:
-      "https://images.unsplash.com/photo-1607081692251-c5f07c4e8e5d?w=600&q=80",
-    // TODO: Replace with singing/vocal coaching photo from Facebook
-    videoUrl: "",
-  },
-  {
-    icon: Trophy,
-    title: "Taekwondo",
-    tagline: "Martial Arts, Discipline & Self-Defence",
-    desc: "Taekwondo builds physical fitness, mental focus, and self-discipline in a structured environment. Students develop respect, coordination, and confidence through graded training.",
-    highlights: [
-      "Belt grading system",
-      "Self-defence skills",
-      "Focus & mental discipline",
-      "Respect & character development",
-    ],
-    accent: "#0891B2",
-    bg: "#ECFEFF",
-    border: "#A5F3FC",
-    iconBg: "#CFFAFE",
-    tag: "",
-    image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
-    // TODO: Replace with taekwondo training photo from Facebook
-    videoUrl: "",
-  },
-  {
-    icon: Waves,
-    title: "Swimming",
-    tagline: "Competitive Training & Water Confidence",
-    desc: "Competitive swimming training that builds champions one stroke at a time. From beginners learning water safety to advanced swimmers preparing for competition, we develop confident aquatic athletes.",
-    highlights: [
-      "Water safety & confidence",
-      "Stroke technique development",
-      "Competitive training",
-      "Race preparation",
-    ],
-    accent: "#2563EB",
-    bg: "#EFF6FF",
-    border: "#BFDBFE",
-    iconBg: "#DBEAFE",
-    tag: "",
-    image:
-      "https://images.unsplash.com/photo-1472261604518-2b8e9d0a5b5e?w=600&q=80",
-    // TODO: Replace with swimming training photo from Facebook
-    videoUrl: "",
-  },
-  {
-    icon: Users,
-    title: "Public Speaking",
-    tagline: "Confidence, Articulation & Leadership",
-    desc: "Equipping young minds with the most powerful skill of all — communication. Students learn to speak with confidence, structure their thoughts, and command a room with clarity and charisma.",
-    highlights: [
-      "Speech & articulation",
-      "Presentation skills",
-      "Debate & storytelling",
-      "Leadership communication",
-    ],
-    accent: "#65A30D",
-    bg: "#F7FEE7",
-    border: "#D9F99D",
-    iconBg: "#ECFCCB",
-    tag: "Leadership",
-    image:
-      "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=600&q=80",
-    // TODO: Replace with public speaking or presentation class photo from Facebook
-    videoUrl: "",
-  },
-];
-// ─────────────────────────────────────────────────────────────────────────────
+import Programs from "../data/programs"; // ← now uses the shared data file
 
 const SCHEDULE = [
   {
@@ -237,7 +39,7 @@ const SCHEDULE = [
 
 const ProgramsPage = () => {
   const navigate = useNavigate();
-  const [activeVideo, setActiveVideo] = useState(null); // stores program title of open video
+  const [activeVideo, setActiveVideo] = useState(null);
 
   const handleEnroll = () => {
     navigate("/");
@@ -254,7 +56,6 @@ const ProgramsPage = () => {
     if (prog.videoUrl) {
       setActiveVideo(prog);
     } else {
-      // If no video yet, scroll to enroll
       handleEnroll();
     }
   };
@@ -354,7 +155,6 @@ const ProgramsPage = () => {
             pointerEvents: "none",
           }}
         />
-
         <div
           style={{
             maxWidth: 1200,
@@ -438,7 +238,7 @@ const ProgramsPage = () => {
             }}
             className="programs-grid"
           >
-            {ALL_PROGRAMS.map((prog) => {
+            {Programs.map((prog) => {
               const Icon = prog.icon;
               return (
                 <div
@@ -487,9 +287,7 @@ const ProgramsPage = () => {
                       onMouseLeave={(e) =>
                         (e.currentTarget.style.transform = "scale(1)")
                       }
-                      /* TODO: Replace prog.image with your actual Facebook photo for this program */
                     />
-                    {/* Accent bar at very top */}
                     <div
                       style={{
                         position: "absolute",
@@ -500,7 +298,6 @@ const ProgramsPage = () => {
                         background: `linear-gradient(90deg,${prog.accent},${prog.accent}88)`,
                       }}
                     />
-                    {/* Gradient overlay at bottom */}
                     <div
                       style={{
                         position: "absolute",
@@ -512,8 +309,6 @@ const ProgramsPage = () => {
                           "linear-gradient(to top,rgba(0,0,0,0.55),transparent)",
                       }}
                     />
-
-                    {/* Tag badge */}
                     {prog.tag && (
                       <div
                         style={{
@@ -535,7 +330,7 @@ const ProgramsPage = () => {
                       </div>
                     )}
 
-                    {/* Watch a class button (bottom of image) */}
+                    {/* Watch a Class button */}
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -572,11 +367,10 @@ const ProgramsPage = () => {
                     >
                       <Play size={11} fill="#fff" color="#fff" />
                       Watch a Class
-                      {/* TODO: Add videoUrl to this program in ALL_PROGRAMS to enable playback */}
                     </button>
                   </div>
 
-                  {/* ── Card content ── */}
+                  {/* Card content */}
                   <div
                     style={{
                       padding: "24px 28px 32px",
