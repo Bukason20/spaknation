@@ -21,10 +21,6 @@ import AIChatbot from "../components/aichatbot";
 
 // ─── REPLACE THESE URLS WITH YOUR FACEBOOK PHOTOS / VIDEOS ──────────────────
 
-const FOUNDER_PHOTO =
-  "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=600&q=80";
-// TODO: Replace with Frank Robert's actual photo from Facebook
-
 const LILIAN_PHOTO =
   "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80";
 // TODO: Replace with Lilian Robert's actual photo from Facebook
@@ -768,6 +764,167 @@ const About = () => {
         </div>
       </section>
 
+      {/* ===== COACHES SECTION (NEW) ===== */}
+      <section style={{ padding: "100px 0", background: "#fff" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <div style={{ textAlign: "center", marginBottom: 60 }}>
+            <div
+              className="section-tag"
+              style={{
+                background: "#F0FFF4",
+                color: "#16A34A",
+                borderColor: "#A7F3D0",
+              }}
+            >
+              <Users size={12} /> Our Team
+            </div>
+            <h2
+              className="bebas"
+              style={{
+                fontSize: "clamp(2.2rem,4vw,3.8rem)",
+                color: "#1a1a1a",
+                letterSpacing: 1,
+              }}
+            >
+              THE COACHES BEHIND THE{" "}
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#E53935,#F57F17)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                GREATNESS
+              </span>
+            </h2>
+            <p
+              style={{
+                color: "#888",
+                fontSize: "0.95rem",
+                marginTop: 10,
+                maxWidth: 480,
+                margin: "10px auto 0",
+              }}
+            >
+              World-class instructors who care as much about character as they
+              do about technique
+            </p>
+            {/* TODO: Update COACHES array at the top of this file with real names, roles, and Facebook photos */}
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4,1fr)",
+              gap: 24,
+            }}
+            className="coaches-grid"
+          >
+            {COACHES.map((coach, i) => (
+              <div
+                key={i}
+                style={{
+                  borderRadius: 24,
+                  overflow: "hidden",
+                  border: "2px solid #F0F0F0",
+                  background: "#fff",
+                  transition: "transform 0.3s, box-shadow 0.3s",
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-8px)";
+                  e.currentTarget.style.boxShadow = `0 20px 50px ${coach.accent}22`;
+                  e.currentTarget.style.borderColor = coach.accent + "44";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "none";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "#F0F0F0";
+                }}
+              >
+                {/* Coach photo */}
+                <div
+                  style={{
+                    position: "relative",
+                    height: 240,
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={coach.photo}
+                    alt={coach.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                      transition: "transform 0.4s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                    /* TODO: Replace each coach photo URL in the COACHES array with Facebook photos */
+                  />
+                  {/* Accent bar at bottom of photo */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 4,
+                      background: `linear-gradient(90deg,${coach.accent},${coach.accent}88)`,
+                    }}
+                  />
+                </div>
+
+                <div style={{ padding: "18px 20px 22px" }}>
+                  <h3
+                    className="bebas"
+                    style={{
+                      fontSize: "1.2rem",
+                      color: "#1a1a1a",
+                      letterSpacing: 1,
+                      marginBottom: 3,
+                    }}
+                  >
+                    {coach.name}
+                  </h3>
+                  <div
+                    style={{
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      color: coach.accent,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      marginBottom: 8,
+                    }}
+                  >
+                    {coach.role}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.78rem",
+                      color: "#888",
+                      background: "#FAFAFA",
+                      borderRadius: 8,
+                      padding: "5px 10px",
+                      display: "inline-block",
+                      border: "1.5px solid #F0F0F0",
+                    }}
+                  >
+                    {coach.discipline}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== BEHIND THE SCENES VIDEO (NEW) ===== */}
       <section
         style={{
@@ -934,167 +1091,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* ===== COACHES SECTION (NEW) ===== */}
-      <section style={{ padding: "100px 0", background: "#fff" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-          <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <div
-              className="section-tag"
-              style={{
-                background: "#F0FFF4",
-                color: "#16A34A",
-                borderColor: "#A7F3D0",
-              }}
-            >
-              <Users size={12} /> Our Team
-            </div>
-            <h2
-              className="bebas"
-              style={{
-                fontSize: "clamp(2.2rem,4vw,3.8rem)",
-                color: "#1a1a1a",
-                letterSpacing: 1,
-              }}
-            >
-              THE COACHES BEHIND THE{" "}
-              <span
-                style={{
-                  background: "linear-gradient(90deg,#E53935,#F57F17)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                GREATNESS
-              </span>
-            </h2>
-            <p
-              style={{
-                color: "#888",
-                fontSize: "0.95rem",
-                marginTop: 10,
-                maxWidth: 480,
-                margin: "10px auto 0",
-              }}
-            >
-              World-class instructors who care as much about character as they
-              do about technique
-            </p>
-            {/* TODO: Update COACHES array at the top of this file with real names, roles, and Facebook photos */}
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4,1fr)",
-              gap: 24,
-            }}
-            className="coaches-grid"
-          >
-            {COACHES.map((coach, i) => (
-              <div
-                key={i}
-                style={{
-                  borderRadius: 24,
-                  overflow: "hidden",
-                  border: "2px solid #F0F0F0",
-                  background: "#fff",
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  cursor: "default",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-8px)";
-                  e.currentTarget.style.boxShadow = `0 20px 50px ${coach.accent}22`;
-                  e.currentTarget.style.borderColor = coach.accent + "44";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "none";
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "#F0F0F0";
-                }}
-              >
-                {/* Coach photo */}
-                <div
-                  style={{
-                    position: "relative",
-                    height: 240,
-                    overflow: "hidden",
-                  }}
-                >
-                  <img
-                    src={coach.photo}
-                    alt={coach.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                      transition: "transform 0.4s",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                    /* TODO: Replace each coach photo URL in the COACHES array with Facebook photos */
-                  />
-                  {/* Accent bar at bottom of photo */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: 4,
-                      background: `linear-gradient(90deg,${coach.accent},${coach.accent}88)`,
-                    }}
-                  />
-                </div>
-
-                <div style={{ padding: "18px 20px 22px" }}>
-                  <h3
-                    className="bebas"
-                    style={{
-                      fontSize: "1.2rem",
-                      color: "#1a1a1a",
-                      letterSpacing: 1,
-                      marginBottom: 3,
-                    }}
-                  >
-                    {coach.name}
-                  </h3>
-                  <div
-                    style={{
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      color: coach.accent,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      marginBottom: 8,
-                    }}
-                  >
-                    {coach.role}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.78rem",
-                      color: "#888",
-                      background: "#FAFAFA",
-                      borderRadius: 8,
-                      padding: "5px 10px",
-                      display: "inline-block",
-                      border: "1.5px solid #F0F0F0",
-                    }}
-                  >
-                    {coach.discipline}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ===== ACHIEVEMENTS ===== */}
       <section style={{ padding: "100px 0", background: "#FAFAFA" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
@@ -1192,148 +1188,6 @@ const About = () => {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== LILIAN & FAMILY ===== */}
-      <section style={{ padding: "80px 0", background: "#FAFAFA" }}>
-        <div
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            padding: "0 24px",
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 80,
-            alignItems: "center",
-          }}
-          className="grid-2"
-        >
-          {/* Lilian photo (NEW) */}
-          <div
-            style={{
-              borderRadius: 28,
-              overflow: "hidden",
-              boxShadow: "0 24px 60px rgba(219,39,119,0.12)",
-            }}
-          >
-            <img
-              src={LILIAN_PHOTO}
-              alt="Lilian Robert — Co-Founder of Spaknation"
-              style={{
-                width: "100%",
-                height: 420,
-                objectFit: "cover",
-                display: "block",
-              }}
-              /* TODO: Replace LILIAN_PHOTO at the top of this file with Lilian's actual Facebook photo */
-            />
-          </div>
-
-          {/* Original family text + pills */}
-          <div style={{ textAlign: "left" }}>
-            <div
-              className="section-tag"
-              style={{
-                background: "#FFF0FA",
-                color: "#DB2777",
-                borderColor: "#FBCFE8",
-              }}
-            >
-              <Heart size={12} /> Family at the Core
-            </div>
-            <h2
-              className="bebas"
-              style={{
-                fontSize: "clamp(2rem,4vw,3.2rem)",
-                color: "#1a1a1a",
-                letterSpacing: 1,
-                marginBottom: 20,
-              }}
-            >
-              BUILT ON FAMILY,
-              <br />
-              <span
-                style={{
-                  background: "linear-gradient(90deg,#DB2777,#E53935)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                DRIVEN BY PURPOSE
-              </span>
-            </h2>
-            <p
-              style={{
-                color: "#666",
-                fontSize: "1rem",
-                lineHeight: 1.85,
-                marginBottom: 36,
-              }}
-            >
-              Frank Robert is happily married to his wife,{" "}
-              <strong style={{ color: "#1a1a1a" }}>Lilian Robert</strong>, who
-              is also a partner of Spaknation. Together, as parents themselves,
-              they understand the responsibility and privilege of shaping young
-              lives. Their family values — safety, love, and excellence — are
-              embedded in every aspect of the Spaknation experience.
-            </p>
-            <div
-              style={{
-                display: "flex",
-                gap: 16,
-                flexWrap: "wrap",
-              }}
-            >
-              {[
-                {
-                  icon: Shield,
-                  label: "Zero Compromise on Child Safety",
-                  color: "#16A34A",
-                  bg: "#F0FFF4",
-                },
-                {
-                  icon: Heart,
-                  label: "Family Values at the Core",
-                  color: "#DB2777",
-                  bg: "#FFF0FA",
-                },
-                {
-                  icon: Users,
-                  label: "Community of Trust",
-                  color: "#2563EB",
-                  bg: "#EFF6FF",
-                },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.label}
-                    style={{
-                      background: item.bg,
-                      borderRadius: 16,
-                      padding: "14px 20px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 10,
-                      border: `2px solid ${item.color}22`,
-                    }}
-                  >
-                    <Icon size={18} color={item.color} />
-                    <span
-                      style={{
-                        fontSize: "0.82rem",
-                        fontWeight: 700,
-                        color: "#1a1a1a",
-                      }}
-                    >
-                      {item.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </section>
