@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
@@ -6,15 +7,72 @@ import {
   Heart,
   MapPin,
   Mic,
+  Play,
   Shield,
   Sparkles,
   Star,
   Target,
   Trophy,
   Users,
+  X,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import AIChatbot from "../components/aichatbot";
+
+// ─── REPLACE THESE URLS WITH YOUR FACEBOOK PHOTOS / VIDEOS ──────────────────
+
+const FOUNDER_PHOTO =
+  "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=600&q=80";
+// TODO: Replace with Frank Robert's actual photo from Facebook
+
+const LILIAN_PHOTO =
+  "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80";
+// TODO: Replace with Lilian Robert's actual photo from Facebook
+
+const BEHIND_SCENES_VIDEO = "https://www.youtube.com/embed/dQw4w9WgXcQ";
+// TODO: Replace with your Facebook/YouTube behind-the-scenes video URL
+// e.g. "https://www.youtube.com/embed/YOUR_VIDEO_ID"
+
+// Coaches — update names, roles, disciplines and photos from Facebook
+const COACHES = [
+  {
+    name: "Frank Robert",
+    role: "Founder & Creative Director",
+    discipline: "Acrobatics · Dance",
+    photo: "./founder.jpg",
+    accent: "#E53935",
+    // TODO: Replace with Frank's actual photo from Facebook
+  },
+  {
+    name: "Lilian Robert",
+    role: "Co-Founder & Partner",
+    discipline: "Music · Singing",
+    photo:
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80",
+    accent: "#F57F17",
+    // TODO: Replace with Lilian's actual photo from Facebook
+  },
+  {
+    name: "Coach Name",
+    role: "Head Coach",
+    discipline: "Gymnastics · Ballet",
+    photo:
+      "https://images.unsplash.com/photo-1590650516494-0c8e4a4dd67e?w=400&q=80",
+    accent: "#16A34A",
+    // TODO: Replace with your actual coach photo and name
+  },
+  {
+    name: "Coach Name",
+    role: "Martial Arts Instructor",
+    discipline: "Taekwondo",
+    photo:
+      "https://images.unsplash.com/photo-1547153760-18fc86324498?w=400&q=80",
+    accent: "#0891B2",
+    // TODO: Replace with your actual Taekwondo coach from Facebook
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const SPAKNATION_METHOD = [
   {
@@ -109,6 +167,7 @@ const ACHIEVEMENTS = [
 
 const About = () => {
   const navigate = useNavigate();
+  const [videoOpen, setVideoOpen] = useState(false);
 
   return (
     <div
@@ -457,178 +516,29 @@ const About = () => {
               alignItems: "center",
             }}
           >
-            {/* Visual Card */}
+            {/* ── FOUNDER PHOTO (replaces the gradient card) ── */}
             <div style={{ position: "relative" }}>
               <div
                 style={{
-                  background: "linear-gradient(135deg,#FFF0F0,#FFF8E7)",
                   borderRadius: 32,
-                  padding: "48px 40px",
-                  border: "2px solid #FFE0D0",
-                  position: "relative",
                   overflow: "hidden",
+                  boxShadow: "0 32px 80px rgba(229,57,53,0.15)",
                 }}
               >
-                <div
+                <img
+                  src="./founder.jpg"
+                  alt="Frank Robert — Founder of Spaknation"
                   style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    width: 180,
-                    height: 180,
-                    background:
-                      "radial-gradient(circle,rgba(229,57,53,0.08) 0%,transparent 70%)",
-                    borderRadius: "50%",
+                    width: "100%",
+                    height: 520,
+                    objectFit: "cover",
+                    display: "block",
                   }}
+                  /* TODO: Replace FOUNDER_PHOTO at top of file with Frank's actual Facebook photo */
                 />
-                <div style={{ position: "relative", zIndex: 2 }}>
-                  {/* Avatar */}
-                  <div
-                    style={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg,#E53935,#F57F17)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: 24,
-                      boxShadow: "0 12px 40px rgba(229,57,53,0.35)",
-                    }}
-                  >
-                    <span
-                      className="bebas"
-                      style={{
-                        fontSize: "2.5rem",
-                        color: "#fff",
-                        letterSpacing: 2,
-                      }}
-                    >
-                      FR
-                    </span>
-                  </div>
-
-                  <div
-                    className="bebas"
-                    style={{
-                      fontSize: "2.5rem",
-                      color: "#1a1a1a",
-                      letterSpacing: 2,
-                      lineHeight: 1,
-                    }}
-                  >
-                    FRANK
-                    <br />
-                    ROBERT
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.82rem",
-                      fontWeight: 700,
-                      color: "#E53935",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.12em",
-                      marginTop: 8,
-                      marginBottom: 20,
-                    }}
-                  >
-                    Founder & Creative Director
-                  </div>
-
-                  <p
-                    style={{
-                      color: "#666",
-                      fontSize: "0.9rem",
-                      lineHeight: 1.75,
-                      marginBottom: 24,
-                    }}
-                  >
-                    Happily married to Lilian Robert, his wife and Spaknation
-                    partner. Together, they've built one of Nigeria's most
-                    respected performing arts institutions for children.
-                  </p>
-
-                  <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                    {[
-                      "25+ Years Experience",
-                      "Father of Three",
-                      "Nigeria's Top Kids Coach",
-                    ].map((b) => (
-                      <span
-                        key={b}
-                        style={{
-                          fontSize: "0.72rem",
-                          fontWeight: 700,
-                          color: "#E53935",
-                          background: "#FFF0F0",
-                          borderRadius: 100,
-                          padding: "5px 14px",
-                          border: "1.5px solid #FFCDD2",
-                        }}
-                      >
-                        {b}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Stats */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: 16,
-                      marginTop: 28,
-                    }}
-                  >
-                    {[
-                      { n: "25+", l: "Years of Experience", color: "#E53935" },
-                      { n: "500+", l: "Children Trained", color: "#F57F17" },
-                      { n: "200K+", l: "TikTok Followers", color: "#16A34A" },
-                      {
-                        n: "2,000+",
-                        l: "Kids at Police Games",
-                        color: "#2563EB",
-                      },
-                    ].map((s) => (
-                      <div
-                        key={s.l}
-                        style={{
-                          background: "#fff",
-                          borderRadius: 16,
-                          padding: "16px",
-                          border: "2px solid #F5F5F5",
-                        }}
-                      >
-                        <div
-                          className="bebas"
-                          style={{
-                            fontSize: "1.8rem",
-                            color: s.color,
-                            lineHeight: 1,
-                          }}
-                        >
-                          {s.n}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: "0.68rem",
-                            fontWeight: 600,
-                            color: "#888",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.06em",
-                            marginTop: 4,
-                            lineHeight: 1.3,
-                          }}
-                        >
-                          {s.l}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
 
-              {/* Floating badge */}
+              {/* Floating star badge — kept from original */}
               <div
                 style={{
                   position: "absolute",
@@ -657,9 +567,60 @@ const About = () => {
                   TOP RATED
                 </div>
               </div>
+
+              {/* Stats grid at bottom — kept from original */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 12,
+                  marginTop: 16,
+                }}
+              >
+                {[
+                  { n: "25+", l: "Years of Experience", color: "#E53935" },
+                  { n: "500+", l: "Children Trained", color: "#F57F17" },
+                  { n: "200K+", l: "TikTok Followers", color: "#16A34A" },
+                  { n: "2,000+", l: "Kids at Police Games", color: "#2563EB" },
+                ].map((s) => (
+                  <div
+                    key={s.l}
+                    style={{
+                      background: "#fff",
+                      borderRadius: 16,
+                      padding: "16px",
+                      border: "2px solid #F5F5F5",
+                    }}
+                  >
+                    <div
+                      className="bebas"
+                      style={{
+                        fontSize: "1.8rem",
+                        color: s.color,
+                        lineHeight: 1,
+                      }}
+                    >
+                      {s.n}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.68rem",
+                        fontWeight: 600,
+                        color: "#888",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.06em",
+                        marginTop: 4,
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {s.l}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Bio */}
+            {/* Bio — identical to original */}
             <div>
               <div
                 className="section-tag"
@@ -807,6 +768,333 @@ const About = () => {
         </div>
       </section>
 
+      {/* ===== BEHIND THE SCENES VIDEO (NEW) ===== */}
+      <section
+        style={{
+          padding: "100px 0",
+          background: "linear-gradient(160deg,#1a1a1a 0%,#2d1a1a 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(circle,rgba(229,57,53,0.07) 1px,transparent 1px)",
+            backgroundSize: "28px 28px",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "0 24px",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          <div style={{ textAlign: "center", marginBottom: 52 }}>
+            <div
+              className="section-tag"
+              style={{
+                background: "rgba(229,57,53,0.15)",
+                color: "#F87171",
+                borderColor: "rgba(229,57,53,0.3)",
+              }}
+            >
+              <Play size={12} /> Behind The Scenes
+            </div>
+            <h2
+              className="bebas"
+              style={{
+                fontSize: "clamp(2.2rem,4vw,3.8rem)",
+                color: "#fff",
+                letterSpacing: 1,
+                marginTop: 10,
+              }}
+            >
+              A DAY IN THE LIFE AT{" "}
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#E53935,#F57F17)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                SPAKNATION
+              </span>
+            </h2>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.5)",
+                fontSize: "0.95rem",
+                marginTop: 10,
+              }}
+            >
+              Watch our coaches and students in real training — real growth
+            </p>
+            {/* TODO: Replace BEHIND_SCENES_VIDEO at the top of this file with your Facebook/YouTube URL */}
+          </div>
+
+          {/* Video player */}
+          <div
+            style={{
+              maxWidth: 860,
+              margin: "0 auto",
+              borderRadius: 24,
+              overflow: "hidden",
+              boxShadow: "0 32px 80px rgba(0,0,0,0.5)",
+              background: "#000",
+            }}
+          >
+            {videoOpen ? (
+              <iframe
+                src={`${BEHIND_SCENES_VIDEO}?autoplay=1`}
+                title="Spaknation Behind the Scenes"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  width: "100%",
+                  aspectRatio: "16/9",
+                  border: "none",
+                  display: "block",
+                }}
+              />
+            ) : (
+              <div
+                style={{ position: "relative", cursor: "pointer" }}
+                onClick={() => setVideoOpen(true)}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1545959570-a94084071b5d?w=900&q=80"
+                  alt="Behind the scenes at Spaknation"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "16/9",
+                    objectFit: "cover",
+                    display: "block",
+                    opacity: 0.65,
+                  }}
+                  /* TODO: Replace with a thumbnail screenshot of your behind-the-scenes video */
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: "50%",
+                      background: "rgba(229,57,53,0.9)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 8px 32px rgba(229,57,53,0.5)",
+                      transition: "transform 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.1)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  >
+                    <Play
+                      size={32}
+                      fill="#fff"
+                      color="#fff"
+                      style={{ marginLeft: 4 }}
+                    />
+                  </div>
+                  <span
+                    style={{
+                      color: "#fff",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+                    }}
+                  >
+                    Watch: A Day at Spaknation
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== COACHES SECTION (NEW) ===== */}
+      <section style={{ padding: "100px 0", background: "#fff" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <div style={{ textAlign: "center", marginBottom: 60 }}>
+            <div
+              className="section-tag"
+              style={{
+                background: "#F0FFF4",
+                color: "#16A34A",
+                borderColor: "#A7F3D0",
+              }}
+            >
+              <Users size={12} /> Our Team
+            </div>
+            <h2
+              className="bebas"
+              style={{
+                fontSize: "clamp(2.2rem,4vw,3.8rem)",
+                color: "#1a1a1a",
+                letterSpacing: 1,
+              }}
+            >
+              THE COACHES BEHIND THE{" "}
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#E53935,#F57F17)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                GREATNESS
+              </span>
+            </h2>
+            <p
+              style={{
+                color: "#888",
+                fontSize: "0.95rem",
+                marginTop: 10,
+                maxWidth: 480,
+                margin: "10px auto 0",
+              }}
+            >
+              World-class instructors who care as much about character as they
+              do about technique
+            </p>
+            {/* TODO: Update COACHES array at the top of this file with real names, roles, and Facebook photos */}
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4,1fr)",
+              gap: 24,
+            }}
+            className="coaches-grid"
+          >
+            {COACHES.map((coach, i) => (
+              <div
+                key={i}
+                style={{
+                  borderRadius: 24,
+                  overflow: "hidden",
+                  border: "2px solid #F0F0F0",
+                  background: "#fff",
+                  transition: "transform 0.3s, box-shadow 0.3s",
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-8px)";
+                  e.currentTarget.style.boxShadow = `0 20px 50px ${coach.accent}22`;
+                  e.currentTarget.style.borderColor = coach.accent + "44";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "none";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = "#F0F0F0";
+                }}
+              >
+                {/* Coach photo */}
+                <div
+                  style={{
+                    position: "relative",
+                    height: 240,
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={coach.photo}
+                    alt={coach.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                      transition: "transform 0.4s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                    /* TODO: Replace each coach photo URL in the COACHES array with Facebook photos */
+                  />
+                  {/* Accent bar at bottom of photo */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 4,
+                      background: `linear-gradient(90deg,${coach.accent},${coach.accent}88)`,
+                    }}
+                  />
+                </div>
+
+                <div style={{ padding: "18px 20px 22px" }}>
+                  <h3
+                    className="bebas"
+                    style={{
+                      fontSize: "1.2rem",
+                      color: "#1a1a1a",
+                      letterSpacing: 1,
+                      marginBottom: 3,
+                    }}
+                  >
+                    {coach.name}
+                  </h3>
+                  <div
+                    style={{
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      color: coach.accent,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      marginBottom: 8,
+                    }}
+                  >
+                    {coach.role}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.78rem",
+                      color: "#888",
+                      background: "#FAFAFA",
+                      borderRadius: 8,
+                      padding: "5px 10px",
+                      display: "inline-block",
+                      border: "1.5px solid #F0F0F0",
+                    }}
+                  >
+                    {coach.discipline}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== ACHIEVEMENTS ===== */}
       <section style={{ padding: "100px 0", background: "#FAFAFA" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
@@ -912,114 +1200,140 @@ const About = () => {
       <section style={{ padding: "80px 0", background: "#FAFAFA" }}>
         <div
           style={{
-            maxWidth: 860,
+            maxWidth: 1100,
             margin: "0 auto",
             padding: "0 24px",
-            textAlign: "center",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 80,
+            alignItems: "center",
           }}
+          className="grid-2"
         >
+          {/* Lilian photo (NEW) */}
           <div
-            className="section-tag"
             style={{
-              background: "#FFF0FA",
-              color: "#DB2777",
-              borderColor: "#FBCFE8",
+              borderRadius: 28,
+              overflow: "hidden",
+              boxShadow: "0 24px 60px rgba(219,39,119,0.12)",
             }}
           >
-            <Heart size={12} /> Family at the Core
-          </div>
-          <h2
-            className="bebas"
-            style={{
-              fontSize: "clamp(2rem,4vw,3.2rem)",
-              color: "#1a1a1a",
-              letterSpacing: 1,
-              marginBottom: 20,
-            }}
-          >
-            BUILT ON FAMILY,
-            <br />
-            <span
+            <img
+              src={LILIAN_PHOTO}
+              alt="Lilian Robert — Co-Founder of Spaknation"
               style={{
-                background: "linear-gradient(90deg,#DB2777,#E53935)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                width: "100%",
+                height: 420,
+                objectFit: "cover",
+                display: "block",
+              }}
+              /* TODO: Replace LILIAN_PHOTO at the top of this file with Lilian's actual Facebook photo */
+            />
+          </div>
+
+          {/* Original family text + pills */}
+          <div style={{ textAlign: "left" }}>
+            <div
+              className="section-tag"
+              style={{
+                background: "#FFF0FA",
+                color: "#DB2777",
+                borderColor: "#FBCFE8",
               }}
             >
-              DRIVEN BY PURPOSE
-            </span>
-          </h2>
-          <p
-            style={{
-              color: "#666",
-              fontSize: "1rem",
-              lineHeight: 1.85,
-              maxWidth: 640,
-              margin: "0 auto 40px",
-            }}
-          >
-            Frank Robert is happily married to his wife,{" "}
-            <strong style={{ color: "#1a1a1a" }}>Lilian Robert</strong>, who is
-            also a partner of Spaknation. Together, as parents themselves, they
-            understand the responsibility and privilege of shaping young lives.
-            Their family values — safety, love, and excellence — are embedded in
-            every aspect of the Spaknation experience.
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: 24,
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            {[
-              {
-                icon: Shield,
-                label: "Zero Compromise on Child Safety",
-                color: "#16A34A",
-                bg: "#F0FFF4",
-              },
-              {
-                icon: Heart,
-                label: "Family Values at the Core",
-                color: "#DB2777",
-                bg: "#FFF0FA",
-              },
-              {
-                icon: Users,
-                label: "Community of Trust",
-                color: "#2563EB",
-                bg: "#EFF6FF",
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.label}
-                  style={{
-                    background: item.bg,
-                    borderRadius: 16,
-                    padding: "16px 24px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    border: `2px solid ${item.color}22`,
-                  }}
-                >
-                  <Icon size={20} color={item.color} />
-                  <span
+              <Heart size={12} /> Family at the Core
+            </div>
+            <h2
+              className="bebas"
+              style={{
+                fontSize: "clamp(2rem,4vw,3.2rem)",
+                color: "#1a1a1a",
+                letterSpacing: 1,
+                marginBottom: 20,
+              }}
+            >
+              BUILT ON FAMILY,
+              <br />
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#DB2777,#E53935)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                DRIVEN BY PURPOSE
+              </span>
+            </h2>
+            <p
+              style={{
+                color: "#666",
+                fontSize: "1rem",
+                lineHeight: 1.85,
+                marginBottom: 36,
+              }}
+            >
+              Frank Robert is happily married to his wife,{" "}
+              <strong style={{ color: "#1a1a1a" }}>Lilian Robert</strong>, who
+              is also a partner of Spaknation. Together, as parents themselves,
+              they understand the responsibility and privilege of shaping young
+              lives. Their family values — safety, love, and excellence — are
+              embedded in every aspect of the Spaknation experience.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: 16,
+                flexWrap: "wrap",
+              }}
+            >
+              {[
+                {
+                  icon: Shield,
+                  label: "Zero Compromise on Child Safety",
+                  color: "#16A34A",
+                  bg: "#F0FFF4",
+                },
+                {
+                  icon: Heart,
+                  label: "Family Values at the Core",
+                  color: "#DB2777",
+                  bg: "#FFF0FA",
+                },
+                {
+                  icon: Users,
+                  label: "Community of Trust",
+                  color: "#2563EB",
+                  bg: "#EFF6FF",
+                },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
                     style={{
-                      fontSize: "0.82rem",
-                      fontWeight: 700,
-                      color: "#1a1a1a",
+                      background: item.bg,
+                      borderRadius: 16,
+                      padding: "14px 20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      border: `2px solid ${item.color}22`,
                     }}
                   >
-                    {item.label}
-                  </span>
-                </div>
-              );
-            })}
+                    <Icon size={18} color={item.color} />
+                    <span
+                      style={{
+                        fontSize: "0.82rem",
+                        fontWeight: 700,
+                        color: "#1a1a1a",
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

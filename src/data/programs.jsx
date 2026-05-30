@@ -10,6 +10,7 @@ const Programs = [
     accent: "#9333EA",
     iconBg: "#F3E8FF",
     tag: "",
+    image: "./ballet.jpg",
   },
   {
     icon: Zap,
@@ -20,6 +21,7 @@ const Programs = [
     accent: "#E53935",
     iconBg: "#FFEBEE",
     tag: "Most Popular",
+    image: "./acrobatics.jpg",
   },
   {
     icon: Star,
@@ -30,6 +32,7 @@ const Programs = [
     accent: "#16A34A",
     iconBg: "#DCFCE7",
     tag: "",
+    image: "./gymnastics.jpg",
   },
   {
     icon: Zap,
@@ -40,6 +43,7 @@ const Programs = [
     accent: "#F57F17",
     iconBg: "#FFF3E0",
     tag: "",
+    image: "./hiphop.jpg",
   },
   {
     icon: Music,
@@ -50,6 +54,7 @@ const Programs = [
     accent: "#D97706",
     iconBg: "#FEF3C7",
     tag: "",
+    image: "./music.jpg",
   },
   {
     icon: Music,
@@ -60,6 +65,7 @@ const Programs = [
     accent: "#DB2777",
     iconBg: "#FCE7F3",
     tag: "",
+    image: "./singing.jpg",
   },
   {
     icon: Trophy,
@@ -80,6 +86,7 @@ const Programs = [
     accent: "#2563EB",
     iconBg: "#DBEAFE",
     tag: "",
+    image: "./swimming.jpg",
   },
   {
     icon: Users,

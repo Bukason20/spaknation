@@ -14,14 +14,82 @@ import {
   Play,
   Shield,
   Sparkles,
+  Camera,
+  X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Programs from "../data/programs";
 import AIChatbot from "../components/aichatbot";
 import Stats from "../data/stats";
 import Values from "../data/values";
-import Navbar from "../components/Navbar"; // ✅ import shared Navbar
+import Navbar from "../components/Navbar";
+import GALLERY_PHOTOS from "../data/gallery";
+
+// ─── REPLACE THESE URLS WITH YOUR FACEBOOK PHOTOS ───────────────────────────
+
+// Replace with your actual Facebook / YouTube video embed URL
+const SHOWCASE_VIDEO_URL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
+
+const ACTIVITY_PHOTOS = [
+  {
+    src: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=400&q=80",
+    title: "Safe & Structured",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=400&q=80",
+    title: "Excellence-Driven",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1607081692251-c5f07c4e8e5d?w=400&q=80",
+    title: "Community-First",
+  },
+];
+// ─────────────────────────────────────────────────────────────────────────────
 
 const Home = () => {
+  const [videoOpen, setVideoOpen] = useState(false);
+
+  // ── Lightbox state ──────────────────────────────────────────────────────────
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const openLightbox = (index) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+    document.body.style.overflow = "";
+  };
+
+  const prevPhoto = (e) => {
+    e.stopPropagation();
+    setLightboxIndex((i) => (i === 0 ? GALLERY_PHOTOS.length - 1 : i - 1));
+  };
+
+  const nextPhoto = (e) => {
+    e.stopPropagation();
+    setLightboxIndex((i) => (i === GALLERY_PHOTOS.length - 1 ? 0 : i + 1));
+  };
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft")
+        setLightboxIndex((i) => (i === 0 ? GALLERY_PHOTOS.length - 1 : i - 1));
+      if (e.key === "ArrowRight")
+        setLightboxIndex((i) => (i === GALLERY_PHOTOS.length - 1 ? 0 : i + 1));
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightboxOpen]);
+  // ───────────────────────────────────────────────────────────────────────────
+
   const scrollTo = (id) => {
     document
       .getElementById(id.toLowerCase())
@@ -38,7 +106,192 @@ const Home = () => {
       }}
     >
       {/* ===== NAVBAR ===== */}
-      <Navbar /> {/* ✅ replaced inline nav with shared component */}
+      <Navbar />
+
+      {/* ===== LIGHTBOX ===== */}
+      {lightboxOpen && (
+        <div
+          onClick={closeLightbox}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.92)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            style={{
+              position: "absolute",
+              top: 20,
+              right: 20,
+              background: "rgba(255,255,255,0.12)",
+              border: "1.5px solid rgba(255,255,255,0.2)",
+              borderRadius: "50%",
+              width: 44,
+              height: 44,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              transition: "background 0.2s",
+              zIndex: 2,
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.22)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.12)")
+            }
+          >
+            <X size={20} color="#fff" />
+          </button>
+
+          {/* Counter */}
+          <div
+            style={{
+              position: "absolute",
+              top: 24,
+              left: "50%",
+              transform: "translateX(-50%)",
+              color: "rgba(255,255,255,0.6)",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              letterSpacing: "0.08em",
+              zIndex: 2,
+            }}
+          >
+            {lightboxIndex + 1} / {GALLERY_PHOTOS.length}
+          </div>
+
+          {/* Prev button */}
+          <button
+            onClick={prevPhoto}
+            style={{
+              position: "absolute",
+              left: 20,
+              background: "rgba(255,255,255,0.12)",
+              border: "1.5px solid rgba(255,255,255,0.2)",
+              borderRadius: "50%",
+              width: 52,
+              height: 52,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              transition: "background 0.2s",
+              zIndex: 2,
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.22)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.12)")
+            }
+          >
+            <ChevronLeft size={24} color="#fff" />
+          </button>
+
+          {/* Main image */}
+          <img
+            src={GALLERY_PHOTOS[lightboxIndex].src}
+            alt={GALLERY_PHOTOS[lightboxIndex].alt}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: "calc(100vw - 160px)",
+              maxHeight: "calc(100vh - 120px)",
+              objectFit: "contain",
+              borderRadius: 16,
+              boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
+              display: "block",
+            }}
+          />
+
+          {/* Next button */}
+          <button
+            onClick={nextPhoto}
+            style={{
+              position: "absolute",
+              right: 20,
+              background: "rgba(255,255,255,0.12)",
+              border: "1.5px solid rgba(255,255,255,0.2)",
+              borderRadius: "50%",
+              width: 52,
+              height: 52,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              transition: "background 0.2s",
+              zIndex: 2,
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.22)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.12)")
+            }
+          >
+            <ChevronRight size={24} color="#fff" />
+          </button>
+
+          {/* Dot indicators */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: 24,
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              gap: 8,
+              zIndex: 2,
+            }}
+          >
+            {GALLERY_PHOTOS.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex(i);
+                }}
+                style={{
+                  width: i === lightboxIndex ? 24 : 8,
+                  height: 8,
+                  borderRadius: 100,
+                  background:
+                    i === lightboxIndex ? "#E53935" : "rgba(255,255,255,0.35)",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "all 0.25s",
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Alt caption */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: 60,
+              left: "50%",
+              transform: "translateX(-50%)",
+              color: "rgba(255,255,255,0.55)",
+              fontSize: "0.82rem",
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              zIndex: 2,
+            }}
+          >
+            {GALLERY_PHOTOS[lightboxIndex].alt}
+          </div>
+        </div>
+      )}
+
       {/* ===== HERO ===== */}
       <section id="home" className="hero-bg dot-bg" style={{ paddingTop: 72 }}>
         <div
@@ -122,35 +375,13 @@ const Home = () => {
                 style={{
                   display: "block",
                   fontSize: "clamp(3rem,7vw,5.8rem)",
-                  background: "linear-gradient(90deg,#E53935,#F57F17)",
+                  background: "linear-gradient(90deg,#E53935,#F57F17,#F9A825)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   letterSpacing: 2,
                 }}
               >
-                DISCOVER
-              </span>
-              <span
-                style={{
-                  display: "block",
-                  fontSize: "clamp(3rem,7vw,5.8rem)",
-                  color: "#1a1a1a",
-                  letterSpacing: 2,
-                }}
-              >
-                THEIR
-              </span>
-              <span
-                style={{
-                  display: "block",
-                  fontSize: "clamp(3rem,7vw,5.8rem)",
-                  background: "linear-gradient(90deg,#16A34A,#2563EB)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  letterSpacing: 2,
-                }}
-              >
-                GREATNESS
+                DISCOVER GREATNESS
               </span>
             </h1>
 
@@ -160,11 +391,12 @@ const Home = () => {
                 fontSize: "1.05rem",
                 lineHeight: 1.8,
                 marginBottom: 36,
-                maxWidth: 460,
+                maxWidth: 480,
               }}
             >
-              Acrobatics, Music, Gymnastics, Performances and more — in a safe,
-              structured space where discipline and joy go hand in hand.
+              A world-class performing arts academy in Port Harcourt building
+              fearless performers, disciplined athletes, and confident leaders
+              through acrobatics, dance, music, and more.
             </p>
 
             <div
@@ -219,241 +451,207 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Right Visual */}
+          {/* ── HERO RIGHT — PHOTO (visible on BOTH mobile and desktop) ── */}
           <div
-            className="hide-mobile"
             style={{
               position: "relative",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              minHeight: 480,
+              minHeight: 380,
             }}
           >
             <div
               className="float-anim"
-              style={{ position: "relative", zIndex: 2 }}
+              style={{ position: "relative", zIndex: 2, width: "100%" }}
             >
+              {/* Main hero photo */}
               <div
                 style={{
-                  width: 300,
-                  height: 300,
-                  borderRadius: "50%",
-                  background:
-                    "linear-gradient(135deg,rgba(229,57,53,0.07),rgba(245,127,23,0.07))",
-                  border: "3px solid rgba(229,57,53,0.12)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  borderRadius: 32,
+                  overflow: "hidden",
+                  boxShadow: "0 32px 80px rgba(229,57,53,0.2)",
+                  border: "4px solid rgba(255,255,255,0.8)",
+                  position: "relative",
                 }}
               >
-                <div style={{ textAlign: "center" }}>
+                <img
+                  src="./heroImg.jpg"
+                  alt="Spaknation kids performing"
+                  style={{
+                    width: "100%",
+                    height: 480,
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+                {/* Gradient overlay at bottom */}
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 80,
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.45), transparent)",
+                  }}
+                />
+                {/* Live pill on photo */}
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 18,
+                    left: 18,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    background: "rgba(255,255,255,0.15)",
+                    backdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    borderRadius: 100,
+                    padding: "6px 14px",
+                  }}
+                ></div>
+              </div>
+
+              {/* Floating stat badge — hidden on very small screens */}
+              <div
+                className="hero-badge-top"
+                style={{
+                  position: "absolute",
+                  top: -20,
+                  right: -20,
+                  background: "#fff",
+                  borderRadius: 20,
+                  padding: "16px 20px",
+                  boxShadow: "0 12px 40px rgba(0,0,0,0.12)",
+                  border: "2px solid #FFF0F0",
+                  textAlign: "center",
+                }}
+              >
+                <div
+                  className="bebas"
+                  style={{ fontSize: "2rem", color: "#E53935", lineHeight: 1 }}
+                >
+                  500+
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.65rem",
+                    fontWeight: 700,
+                    color: "#888",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  Kids Trained
+                </div>
+              </div>
+
+              {/* Floating discipline badge */}
+              <div
+                className="hero-badge-bottom"
+                style={{
+                  position: "absolute",
+                  bottom: -16,
+                  left: -20,
+                  background: "linear-gradient(135deg,#E53935,#F57F17)",
+                  borderRadius: 16,
+                  padding: "12px 18px",
+                  boxShadow: "0 8px 30px rgba(229,57,53,0.4)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                <Camera size={18} color="#fff" />
+                <div>
                   <div
                     style={{
-                      width: 90,
-                      height: 90,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg,#E53935,#F57F17)",
-                      margin: "0 auto 12px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      boxShadow: "0 12px 40px rgba(229,57,53,0.4)",
-                    }}
-                  >
-                    <Sparkles size={38} color="#fff" />
-                  </div>
-                  <div
-                    className="bebas"
-                    style={{
-                      fontSize: "1.6rem",
-                      color: "#1a1a1a",
-                      letterSpacing: 3,
-                    }}
-                  >
-                    SPAKNATION
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 4,
-                      justifyContent: "center",
-                      marginTop: 6,
-                    }}
-                  >
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={12} fill="#F9A825" color="#F9A825" />
-                    ))}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.68rem",
-                      color: "#888",
-                      marginTop: 6,
-                      fontWeight: 600,
-                      letterSpacing: "0.1em",
+                      fontSize: "0.7rem",
+                      fontWeight: 800,
+                      color: "#fff",
                       textTransform: "uppercase",
+                      letterSpacing: "0.08em",
                     }}
                   >
-                    Excellence in Every Step
+                    9 Disciplines
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.62rem",
+                      color: "rgba(255,255,255,0.8)",
+                    }}
+                  >
+                    Ballet · Acrobatics · Music · More
                   </div>
                 </div>
               </div>
             </div>
-
-            {[
-              {
-                icon: Zap,
-                label: "Acrobatics",
-                color: "#E53935",
-                bg: "#FFF0F0",
-                style: { top: "5%", left: "0%" },
-              },
-              {
-                icon: Music,
-                label: "Music",
-                color: "#F57F17",
-                bg: "#FFF8E7",
-                style: { top: "5%", right: "0%", left: "auto" },
-              },
-              {
-                icon: Star,
-                label: "Gymnastics",
-                color: "#16A34A",
-                bg: "#F0FFF4",
-                style: { bottom: "15%", left: "0%", top: "auto" },
-              },
-              {
-                icon: Waves,
-                label: "Swimming",
-                color: "#2563EB",
-                bg: "#EFF6FF",
-                style: {
-                  bottom: "15%",
-                  right: "0%",
-                  left: "auto",
-                  top: "auto",
-                },
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.label}
-                  style={{
-                    position: "absolute",
-                    ...item.style,
-                    background: item.bg,
-                    borderRadius: 16,
-                    padding: "12px 16px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-                    border: `2px solid ${item.color}22`,
-                    whiteSpace: "nowrap",
-                    zIndex: 3,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: 10,
-                      background: `${item.color}18`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Icon size={16} color={item.color} />
-                  </div>
-                  <span
-                    style={{
-                      fontSize: "0.78rem",
-                      fontWeight: 700,
-                      color: "#1a1a1a",
-                    }}
-                  >
-                    {item.label}
-                  </span>
-                </div>
-              );
-            })}
           </div>
         </div>
-
-        <div
-          style={{
-            textAlign: "center",
-            paddingBottom: 48,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          <span
-            style={{
-              fontSize: "0.68rem",
-              fontWeight: 600,
-              color: "#AAA",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-            }}
-          >
-            Scroll to explore
-          </span>
-          <ChevronDown size={18} color="#CCC" />
-        </div>
       </section>
-      {/* ===== MARQUEE ===== */}
-      <div
+
+      {/* ===== MARQUEE STRIP ===== */}
+      <section
         style={{
+          padding: "20px 0",
           background: "linear-gradient(90deg,#E53935,#F57F17,#F9A825)",
-          padding: "14px 0",
           overflow: "hidden",
         }}
       >
         <div className="marquee-track">
-          {[...Array(3)].flatMap(() =>
-            [
-              "Acrobatics",
-              "Music",
-              "Gymnastics",
-              "Live Performances",
-              "Swimming Competition",
-              "School Partnership",
-              "Kids Showcase",
-            ].map((t, i) => (
+          {[
+            "Acrobatics",
+            "Ballet",
+            "Gymnastics",
+            "Hip Hop",
+            "Music",
+            "Singing",
+            "Taekwondo",
+            "Swimming",
+            "Public Speaking",
+            "Acrobatics",
+            "Ballet",
+            "Gymnastics",
+            "Hip Hop",
+            "Music",
+            "Singing",
+            "Taekwondo",
+            "Swimming",
+            "Public Speaking",
+          ].map((item, i) => (
+            <span
+              key={i}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 16,
+                padding: "0 24px",
+                fontSize: "0.82rem",
+                fontWeight: 700,
+                color: "#fff",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {item}
               <span
-                key={t + i}
-                className="bebas"
                 style={{
-                  fontSize: "1.3rem",
-                  letterSpacing: 3,
-                  color: "#fff",
-                  marginRight: 48,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 16,
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: "rgba(255,255,255,0.5)",
+                  display: "inline-block",
                 }}
-              >
-                {t}{" "}
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: "rgba(255,255,255,0.5)",
-                    display: "inline-block",
-                  }}
-                />
-              </span>
-            )),
-          )}
+              />
+            </span>
+          ))}
         </div>
-      </div>
+      </section>
+
       {/* ===== ABOUT ===== */}
       <section id="about" style={{ padding: "100px 0", background: "#fff" }}>
         <div
@@ -526,134 +724,104 @@ const Home = () => {
               partnerships build skills and character alike — nurturing the
               whole child through discipline, integrity, and excellence.
             </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-              {[
-                "Safe Environment",
-                "Expert Coaches",
-                "School-Ready Programs",
-                "Performance Training",
-                "All Age Groups",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  style={{
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    color: "#555",
-                    background: "#F5F5F5",
-                    borderRadius: 100,
-                    padding: "6px 14px",
-                    border: "1.5px solid #E8E8E8",
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {Values.map((v) => {
               const Icon = v.icon;
               return (
                 <div
                   key={v.label}
                   className="value-pill"
-                  style={{ background: v.bg, border: `2px solid ${v.color}22` }}
+                  style={{
+                    background: v.bg,
+                    borderColor: v.border,
+                    marginBottom: 10,
+                  }}
                 >
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: 16,
-                      background: "#fff",
+                      width: 40,
+                      height: 40,
+                      borderRadius: 12,
+                      background: v.iconBg,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      boxShadow: `0 4px 14px ${v.color}22`,
                       flexShrink: 0,
                     }}
                   >
-                    <Icon size={22} color={v.color} />
+                    <Icon size={18} color={v.color} />
                   </div>
-                  <div>
-                    <div
-                      className="bebas"
-                      style={{
-                        fontSize: "1.5rem",
-                        color: "#1a1a1a",
-                        letterSpacing: 1,
-                      }}
-                    >
-                      {v.label}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.78rem",
-                        color: "#888",
-                        marginTop: 1,
-                      }}
-                    >
-                      A core pillar of the Spaknation philosophy
-                    </div>
-                  </div>
-                  <div
+                  <span
                     style={{
-                      marginLeft: "auto",
-                      width: 32,
-                      height: 32,
-                      borderRadius: "50%",
-                      background: `${v.color}15`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
+                      fontWeight: 700,
+                      fontSize: "0.92rem",
+                      color: "#1a1a1a",
                     }}
                   >
-                    <ArrowRight size={14} color={v.color} />
-                  </div>
+                    {v.label}
+                  </span>
                 </div>
               );
             })}
+          </div>
+
+          <div style={{ position: "relative" }}>
             <div
               style={{
-                background: "linear-gradient(135deg,#E53935,#F57F17)",
-                borderRadius: 20,
-                padding: "20px 24px",
-                display: "flex",
-                gap: 20,
-                marginTop: 6,
+                borderRadius: 28,
+                overflow: "hidden",
+                boxShadow: "0 24px 60px rgba(0,0,0,0.12)",
               }}
             >
-              {[
-                { n: "8+", l: "Years" },
-                { n: "500+", l: "Kids" },
-                { n: "50+", l: "Schools" },
-              ].map((s) => (
-                <div key={s.l} style={{ textAlign: "center", flex: 1 }}>
-                  <div
-                    className="bebas"
-                    style={{ fontSize: "2rem", color: "#fff", lineHeight: 1 }}
-                  >
-                    {s.n}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.72rem",
-                      color: "rgba(255,255,255,0.75)",
-                      fontWeight: 600,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                    }}
-                  >
-                    {s.l}
-                  </div>
-                </div>
-              ))}
+              <img
+                src="/about.jpg"
+                alt="Spaknation students training"
+                style={{
+                  width: "100%",
+                  height: 490,
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                bottom: -24,
+                left: -24,
+                background: "#fff",
+                borderRadius: 20,
+                padding: "20px 24px",
+                boxShadow: "0 12px 40px rgba(0,0,0,0.1)",
+                border: "2px solid #FFF0F0",
+                maxWidth: 240,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "0.85rem",
+                  fontStyle: "italic",
+                  color: "#444",
+                  lineHeight: 1.6,
+                  marginBottom: 8,
+                }}
+              >
+                "Every child has greatness in them — we just help them find it."
+              </div>
+              <div
+                style={{
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  color: "#E53935",
+                }}
+              >
+                — Frank Robert, Founder
+              </div>
             </div>
           </div>
         </div>
       </section>
+
       {/* ===== PROGRAMS ===== */}
       <section
         id="programs"
@@ -701,7 +869,7 @@ const Home = () => {
                 margin: "12px auto 0",
               }}
             >
-              Seven world-class disciplines. One extraordinary journey.
+              Nine world-class disciplines. One extraordinary journey.
             </p>
           </div>
 
@@ -723,61 +891,115 @@ const Home = () => {
                 >
                   <div
                     style={{
-                      height: 6,
-                      background: `linear-gradient(90deg,${prog.accent},${prog.accent}88)`,
+                      position: "relative",
+                      height: 280,
+                      overflow: "hidden",
                     }}
-                  />
-                  <div style={{ padding: "28px 28px 32px" }}>
+                  >
+                    <img
+                      src={prog.image}
+                      alt={`${prog.title} at Spaknation`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 5,
+                        background: `linear-gradient(90deg,${prog.accent},${prog.accent}88)`,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 70,
+                        background:
+                          "linear-gradient(to top,rgba(0,0,0,0.5),transparent)",
+                      }}
+                    />
                     {prog.tag && (
                       <div
                         style={{
-                          display: "inline-block",
-                          fontSize: "0.65rem",
+                          position: "absolute",
+                          top: 12,
+                          right: 12,
+                          fontSize: "0.62rem",
                           fontWeight: 800,
                           letterSpacing: "0.1em",
                           textTransform: "uppercase",
-                          color: prog.accent,
-                          background: `${prog.accent}14`,
+                          color: "#fff",
+                          background: prog.accent,
                           borderRadius: 100,
                           padding: "4px 12px",
-                          marginBottom: 14,
-                          border: `1.5px solid ${prog.accent}30`,
                         }}
                       >
                         {prog.tag}
                       </div>
                     )}
+                  </div>
+
+                  <div style={{ padding: "24px 28px 32px" }}>
                     <div
                       style={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: 18,
-                        background: prog.iconBg,
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        marginBottom: 18,
-                        border: `2px solid ${prog.accent}22`,
-                      }}
-                    >
-                      <Icon size={26} color={prog.accent} />
-                    </div>
-                    <h3
-                      className="bebas"
-                      style={{
-                        fontSize: "1.5rem",
-                        color: "#1a1a1a",
-                        letterSpacing: 1,
+                        gap: 10,
                         marginBottom: 10,
                       }}
                     >
-                      {prog.title}
-                    </h3>
+                      <div
+                        style={{
+                          width: 36,
+                          height: 36,
+                          borderRadius: 10,
+                          background: prog.iconBg,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <Icon size={18} color={prog.accent} />
+                      </div>
+                      <h3
+                        className="bebas"
+                        style={{
+                          fontSize: "1.5rem",
+                          color: "#1a1a1a",
+                          letterSpacing: 1,
+                        }}
+                      >
+                        {prog.title}
+                      </h3>
+                    </div>
                     <p
                       style={{
-                        color: "#777",
+                        fontSize: "0.78rem",
+                        fontWeight: 700,
+                        color: prog.accent,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        marginBottom: 10,
+                      }}
+                    >
+                      {prog.tagline}
+                    </p>
+                    <p
+                      style={{
+                        color: "#666",
                         fontSize: "0.875rem",
                         lineHeight: 1.7,
+                        marginBottom: 20,
                       }}
                     >
                       {prog.desc}
@@ -787,7 +1009,6 @@ const Home = () => {
                         display: "flex",
                         alignItems: "center",
                         gap: 6,
-                        marginTop: 20,
                         color: prog.accent,
                         fontSize: "0.78rem",
                         fontWeight: 700,
@@ -802,129 +1023,140 @@ const Home = () => {
           </div>
         </div>
       </section>
-      {/* ===== CTA BANNER ===== */}
+
+      {/* ===== PHOTO GALLERY STRIP — with Lightbox ===== */}
       <section
-        id="showcase"
-        style={{
-          padding: "100px 0",
-          background:
-            "linear-gradient(135deg,#E53935 0%,#F57F17 50%,#F9A825 100%)",
-          position: "relative",
-          overflow: "hidden",
-        }}
+        style={{ padding: "80px 0", background: "#1a1a1a", overflow: "hidden" }}
       >
         <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "radial-gradient(circle,rgba(255,255,255,0.12) 1px,transparent 1px)",
-            backgroundSize: "24px 24px",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse at 10% 50%, rgba(255,255,255,0.08) 0%, transparent 40%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            maxWidth: 800,
-            margin: "0 auto",
-            padding: "0 24px",
-            textAlign: "center",
-            position: "relative",
-            zIndex: 2,
-          }}
+          style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 40px" }}
         >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              background: "rgba(255,255,255,0.2)",
-              border: "1.5px solid rgba(255,255,255,0.35)",
-              borderRadius: 100,
-              padding: "6px 18px",
-              marginBottom: 28,
-            }}
-          >
-            <Star size={12} fill="#fff" color="#fff" />
-            <span
+          <div style={{ textAlign: "center" }}>
+            <div
+              className="section-tag"
               style={{
-                fontSize: "0.72rem",
-                fontWeight: 700,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "#fff",
+                background: "rgba(255,255,255,0.08)",
+                color: "#F9A825",
+                borderColor: "rgba(249,168,37,0.3)",
               }}
             >
-              Season Showcase
-            </span>
+              <Camera size={12} /> Our Moments
+            </div>
+            <h2
+              className="bebas"
+              style={{
+                fontSize: "clamp(2rem,4vw,3.5rem)",
+                color: "#fff",
+                letterSpacing: 1,
+                marginTop: 8,
+              }}
+            >
+              LIFE AT{" "}
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#E53935,#F57F17,#F9A825)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                SPAKNATION
+              </span>
+            </h2>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.45)",
+                fontSize: "0.9rem",
+                marginTop: 8,
+              }}
+            >
+              Click any photo to expand it — use the arrows or keyboard to
+              browse
+            </p>
           </div>
-          <h2
-            className="bebas cta-text"
-            style={{
-              fontSize: "clamp(2.8rem,6vw,5.5rem)",
-              color: "#fff",
-              lineHeight: 0.95,
-              letterSpacing: 2,
-              marginBottom: 20,
-            }}
-          >
-            WATCH YOUR CHILD
-            <br />
-            BECOME A STAR
-          </h2>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.88)",
-              fontSize: "1.05rem",
-              lineHeight: 1.75,
-              maxWidth: 560,
-              margin: "0 auto 40px",
-            }}
-          >
-            Our curated Kids Showcase events are unforgettable celebrations of
-            talent, discipline, and growth — moments your family will treasure
-            forever.
-          </p>
-          <button
-            onClick={() => scrollTo("contact")}
-            style={{
-              background: "#fff",
-              color: "#E53935",
-              border: "none",
-              cursor: "pointer",
-              fontFamily: "'Outfit',sans-serif",
-              fontWeight: 800,
-              fontSize: "0.95rem",
-              padding: "18px 40px",
-              borderRadius: 100,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              boxShadow: "0 12px 40px rgba(0,0,0,0.2)",
-              transition: "transform 0.2s,box-shadow 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-3px)";
-              e.currentTarget.style.boxShadow = "0 18px 50px rgba(0,0,0,0.25)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "none";
-              e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.2)";
-            }}
-          >
-            Register Your Child Today <ArrowRight size={18} />
-          </button>
+        </div>
+
+        {/* Scrolling gallery row — each photo is clickable */}
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            overflowX: "auto",
+            padding: "0 24px 8px",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          }}
+        >
+          {GALLERY_PHOTOS.map((photo, i) => (
+            <div
+              key={i}
+              onClick={() => openLightbox(i)}
+              style={{
+                flexShrink: 0,
+                width: 280,
+                height: 200,
+                borderRadius: 16,
+                overflow: "hidden",
+                position: "relative",
+                cursor: "pointer",
+              }}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                  transition: "transform 0.4s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.07)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "scale(1)")
+                }
+              />
+              {/* Hover overlay with expand hint */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "rgba(229,57,53,0)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "background 0.3s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "rgba(0,0,0,0.35)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "rgba(0,0,0,0)")
+                }
+              >
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.9)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: 0,
+                    transition: "opacity 0.3s",
+                  }}
+                  className="gallery-expand-icon"
+                >
+                  <Camera size={18} color="#E53935" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
+
       {/* ===== WHY SPAKNATION ===== */}
       <section style={{ padding: "100px 0", background: "#fff" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
@@ -975,6 +1207,7 @@ const Home = () => {
                 color: "#16A34A",
                 bg: "#F0FFF4",
                 border: "#A7F3D0",
+                photo: "./structured.jpg",
               },
               {
                 icon: Award,
@@ -983,6 +1216,7 @@ const Home = () => {
                 color: "#E53935",
                 bg: "#FFF0F0",
                 border: "#FFCDD2",
+                photo: "./excellence.jpg",
               },
               {
                 icon: Users,
@@ -991,6 +1225,7 @@ const Home = () => {
                 color: "#F57F17",
                 bg: "#FFF8E7",
                 border: "#FFE082",
+                photo: "./community.jpg",
               },
             ].map((item) => {
               const Icon = item.icon;
@@ -1001,49 +1236,296 @@ const Home = () => {
                   style={{
                     background: item.bg,
                     border: `2px solid ${item.border}`,
+                    padding: 0,
+                    overflow: "hidden",
                   }}
                 >
                   <div
                     style={{
-                      width: 56,
-                      height: 56,
-                      borderRadius: 18,
-                      background: "#fff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: 20,
-                      boxShadow: `0 4px 16px ${item.color}22`,
+                      height: 320,
+                      overflow: "hidden",
+                      position: "relative",
                     }}
                   >
-                    <Icon size={26} color={item.color} />
+                    <img
+                      src={item.photo}
+                      alt={item.title}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 50,
+                        background: `linear-gradient(to top, ${item.bg}, transparent)`,
+                      }}
+                    />
                   </div>
-                  <h3
-                    className="bebas"
-                    style={{
-                      fontSize: "1.6rem",
-                      color: "#1a1a1a",
-                      letterSpacing: 1,
-                      marginBottom: 10,
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p
-                    style={{
-                      color: "#666",
-                      fontSize: "0.875rem",
-                      lineHeight: 1.75,
-                    }}
-                  >
-                    {item.desc}
-                  </p>
+                  <div style={{ padding: "24px 28px 32px" }}>
+                    <div
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 14,
+                        background: "#fff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginBottom: 16,
+                        boxShadow: `0 4px 16px ${item.color}22`,
+                      }}
+                    >
+                      <Icon size={24} color={item.color} />
+                    </div>
+                    <h3
+                      className="bebas"
+                      style={{
+                        fontSize: "1.5rem",
+                        color: "#1a1a1a",
+                        letterSpacing: 1,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {item.title}
+                    </h3>
+                    <p
+                      style={{
+                        color: "#666",
+                        fontSize: "0.875rem",
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
       </section>
+
+      {/* ===== SHOWCASE / CTA WITH VIDEO ===== */}
+      <section
+        id="showcase"
+        style={{
+          padding: "100px 0",
+          background:
+            "linear-gradient(135deg,#E53935 0%,#F57F17 50%,#F9A825 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(circle,rgba(255,255,255,0.12) 1px,transparent 1px)",
+            backgroundSize: "24px 24px",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            maxWidth: 1100,
+            margin: "0 auto",
+            padding: "0 24px",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "rgba(255,255,255,0.2)",
+                border: "1.5px solid rgba(255,255,255,0.35)",
+                borderRadius: 100,
+                padding: "6px 18px",
+                marginBottom: 20,
+              }}
+            >
+              <Star size={12} fill="#fff" color="#fff" />
+              <span
+                style={{
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: "#fff",
+                }}
+              >
+                Season Showcase
+              </span>
+            </div>
+            <h2
+              className="bebas cta-text"
+              style={{
+                fontSize: "clamp(2.8rem,6vw,5.5rem)",
+                color: "#fff",
+                lineHeight: 0.95,
+                letterSpacing: 2,
+                marginBottom: 16,
+              }}
+            >
+              WATCH YOUR CHILD
+              <br />
+              BECOME A STAR
+            </h2>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.88)",
+                fontSize: "1.05rem",
+                lineHeight: 1.75,
+                maxWidth: 560,
+                margin: "0 auto 48px",
+              }}
+            >
+              Our curated Kids Showcase events are unforgettable celebrations of
+              talent, discipline, and growth — moments your family will treasure
+              forever.
+            </p>
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              borderRadius: 24,
+              overflow: "hidden",
+              boxShadow: "0 32px 80px rgba(0,0,0,0.3)",
+              maxWidth: 800,
+              margin: "0 auto",
+              background: "#000",
+            }}
+          >
+            {videoOpen ? (
+              <iframe
+                src={`${SHOWCASE_VIDEO_URL}?autoplay=1`}
+                title="Spaknation Showcase"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  width: "100%",
+                  aspectRatio: "16/9",
+                  border: "none",
+                  display: "block",
+                }}
+              />
+            ) : (
+              <div
+                style={{ position: "relative", cursor: "pointer" }}
+                onClick={() => setVideoOpen(true)}
+              >
+                <img
+                  src="/images/showcase-thumbnail.jpg"
+                  alt="Spaknation showcase event"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "16/9",
+                    objectFit: "cover",
+                    display: "block",
+                    opacity: 0.85,
+                  }}
+                  /* TODO: Replace with /images/showcase-thumbnail.jpg — a screenshot of your video */
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "rgba(0,0,0,0.3)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: "50%",
+                      background: "rgba(255,255,255,0.95)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+                      marginBottom: 16,
+                      transition: "transform 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.1)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  >
+                    <Play
+                      size={32}
+                      fill="#E53935"
+                      color="#E53935"
+                      style={{ marginLeft: 4 }}
+                    />
+                  </div>
+                  <span
+                    style={{
+                      color: "#fff",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      letterSpacing: "0.05em",
+                      textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                    }}
+                  >
+                    Watch Our Latest Showcase
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 48 }}>
+            <button
+              onClick={() => scrollTo("contact")}
+              style={{
+                background: "#fff",
+                color: "#E53935",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "'Outfit',sans-serif",
+                fontWeight: 800,
+                fontSize: "0.95rem",
+                padding: "18px 40px",
+                borderRadius: 100,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                boxShadow: "0 12px 40px rgba(0,0,0,0.2)",
+                transition: "transform 0.2s,box-shadow 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow =
+                  "0 18px 50px rgba(0,0,0,0.25)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "none";
+                e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.2)";
+              }}
+            >
+              Register Your Child Today <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* ===== CONTACT ===== */}
       <section
         id="contact"
@@ -1109,385 +1591,296 @@ const Home = () => {
               school partnerships — we're here to help your child take their
               first step toward greatness.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              {[
-                {
-                  icon: Phone,
-                  label: "Call Us",
-                  value: "+234 000 000 0000",
-                  color: "#E53935",
-                  bg: "#FFF0F0",
-                },
-                {
-                  icon: Mail,
-                  label: "Email Us",
-                  value: "hello@spaknation.com",
-                  color: "#2563EB",
-                  bg: "#EFF6FF",
-                },
-                {
-                  icon: MapPin,
-                  label: "Visit Us",
-                  value: "Port Harcourt, Nigeria",
-                  color: "#16A34A",
-                  bg: "#F0FFF4",
-                },
-              ].map((info) => {
-                const Icon = info.icon;
-                return (
+
+            {[
+              {
+                icon: Phone,
+                label: "Call Us",
+                value: "+234 000 000 0000",
+                color: "#16A34A",
+              },
+              {
+                icon: Mail,
+                label: "Email Us",
+                value: "hello@spaknation.com",
+                color: "#2563EB",
+              },
+              {
+                icon: MapPin,
+                label: "Find Us",
+                value: "Port Harcourt, Rivers State",
+                color: "#E53935",
+              },
+            ].map((c) => {
+              const Icon = c.icon;
+              return (
+                <div
+                  key={c.label}
+                  style={{
+                    display: "flex",
+                    gap: 16,
+                    alignItems: "flex-start",
+                    marginBottom: 24,
+                  }}
+                >
                   <div
-                    key={info.label}
-                    style={{ display: "flex", alignItems: "center", gap: 16 }}
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 12,
+                      background: `${c.color}10`,
+                      border: `1.5px solid ${c.color}25`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
                   >
+                    <Icon size={18} color={c.color} />
+                  </div>
+                  <div>
                     <div
                       style={{
-                        width: 52,
-                        height: 52,
-                        borderRadius: 16,
-                        background: info.bg,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        border: `2px solid ${info.color}22`,
+                        fontSize: "0.72rem",
+                        fontWeight: 700,
+                        color: "#aaa",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        marginBottom: 2,
                       }}
                     >
-                      <Icon size={20} color={info.color} />
+                      {c.label}
                     </div>
-                    <div>
-                      <div
-                        style={{
-                          fontSize: "0.7rem",
-                          fontWeight: 700,
-                          color: "#AAA",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.1em",
-                        }}
-                      >
-                        {info.label}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "0.9rem",
-                          fontWeight: 600,
-                          color: "#1a1a1a",
-                          marginTop: 2,
-                        }}
-                      >
-                        {info.value}
-                      </div>
+                    <div
+                      style={{
+                        fontSize: "0.95rem",
+                        fontWeight: 600,
+                        color: "#1a1a1a",
+                      }}
+                    >
+                      {c.value}
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
 
           <div
             style={{
               background: "#fff",
               borderRadius: 28,
-              padding: 40,
-              boxShadow: "0 16px 60px rgba(0,0,0,0.08)",
+              padding: "40px 36px",
+              boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
               border: "2px solid #F0F0F0",
             }}
           >
-            <h3
-              className="bebas"
-              style={{
-                fontSize: "2rem",
-                color: "#1a1a1a",
-                letterSpacing: 1,
-                marginBottom: 28,
-              }}
-            >
-              SEND US A MESSAGE
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 16,
-                }}
-              >
-                <div>
-                  <label
-                    style={{
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      color: "#888",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      display: "block",
-                      marginBottom: 8,
-                    }}
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="John"
-                    className="contact-input"
-                  />
-                </div>
-                <div>
-                  <label
-                    style={{
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      color: "#888",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      display: "block",
-                      marginBottom: 8,
-                    }}
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Doe"
-                    className="contact-input"
-                  />
-                </div>
-              </div>
-              <div>
+            {[
+              {
+                label: "Parent's Full Name",
+                type: "text",
+                placeholder: "e.g. Ada Okonkwo",
+              },
+              {
+                label: "Email Address",
+                type: "email",
+                placeholder: "hello@example.com",
+              },
+              {
+                label: "Phone Number",
+                type: "tel",
+                placeholder: "+234 000 000 0000",
+              },
+              { label: "Child's Age", type: "number", placeholder: "e.g. 8" },
+            ].map((f) => (
+              <div key={f.label} style={{ marginBottom: 20 }}>
                 <label
                   style={{
-                    fontSize: "0.72rem",
-                    fontWeight: 700,
-                    color: "#888",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
                     display: "block",
+                    fontSize: "0.82rem",
+                    fontWeight: 700,
+                    color: "#444",
                     marginBottom: 8,
                   }}
                 >
-                  Email Address
+                  {f.label}
                 </label>
                 <input
-                  type="email"
-                  placeholder="john@example.com"
+                  type={f.type}
+                  placeholder={f.placeholder}
                   className="contact-input"
+                  style={{
+                    width: "100%",
+                    padding: "14px 16px",
+                    borderRadius: 12,
+                    border: "2px solid #F0F0F0",
+                    fontSize: "0.9rem",
+                    fontFamily: "'Outfit',sans-serif",
+                    background: "#FAFAFA",
+                    outline: "none",
+                    boxSizing: "border-box",
+                  }}
                 />
               </div>
-              <div>
-                <label
-                  style={{
-                    fontSize: "0.72rem",
-                    fontWeight: 700,
-                    color: "#888",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    display: "block",
-                    marginBottom: 8,
-                  }}
-                >
-                  Program Interest
-                </label>
-                <select className="contact-input" style={{ cursor: "pointer" }}>
-                  <option value="">Select a program...</option>
-                  {Programs.map((p) => (
-                    <option key={p.title}>{p.title}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label
-                  style={{
-                    fontSize: "0.72rem",
-                    fontWeight: 700,
-                    color: "#888",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    display: "block",
-                    marginBottom: 8,
-                  }}
-                >
-                  Message
-                </label>
-                <textarea
-                  rows={4}
-                  placeholder="Tell us about your child and any questions you have..."
-                  className="contact-input"
-                  style={{ resize: "none" }}
-                />
-              </div>
-              <button
-                className="btn-red"
-                style={{
-                  padding: "16px 0",
-                  width: "100%",
-                  justifyContent: "center",
-                  borderRadius: 14,
-                  fontSize: "0.95rem",
-                  marginTop: 6,
-                }}
-              >
-                Send Message <ArrowRight size={16} />
-              </button>
-            </div>
+            ))}
+            <button
+              className="btn-red"
+              style={{
+                width: "100%",
+                padding: "16px",
+                fontSize: "0.95rem",
+                marginTop: 8,
+              }}
+            >
+              Send Enquiry <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </section>
+
       {/* ===== FOOTER ===== */}
-      <footer style={{ background: "#1a1a1a", padding: "60px 0 32px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-          <div
-            className="grid-footer"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "2fr 1fr 1fr",
-              gap: 48,
-              marginBottom: 48,
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  marginBottom: 16,
-                }}
-              >
-                <div
+      <footer style={{ background: "#111", padding: "60px 0 40px" }}>
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "0 24px",
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr 1fr",
+            gap: 60,
+            marginBottom: 40,
+          }}
+          className="grid-footer"
+        >
+          <div>
+            <div
+              className="bebas"
+              style={{
+                fontSize: "1.8rem",
+                color: "#fff",
+                letterSpacing: 2,
+                marginBottom: 12,
+              }}
+            >
+              SPAK<span style={{ color: "#E53935" }}>NATION</span>
+            </div>
+            <p
+              style={{
+                color: "#555",
+                fontSize: "0.875rem",
+                lineHeight: 1.75,
+                maxWidth: 300,
+                marginBottom: 20,
+              }}
+            >
+              Igniting the greatness in every child through world-class
+              performing arts in Port Harcourt, Nigeria.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                marginTop: 20,
+                flexWrap: "wrap",
+              }}
+            >
+              {["Acrobatics", "Music", "Dance"].map((t) => (
+                <span
+                  key={t}
                   style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg,#E53935,#F57F17)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    fontSize: "0.68rem",
+                    fontWeight: 600,
+                    color: "#888",
+                    background: "#2a2a2a",
+                    borderRadius: 100,
+                    padding: "4px 12px",
+                    border: "1px solid #333",
                   }}
                 >
-                  <Sparkles size={18} color="#fff" />
-                </div>
-                <span
-                  className="bebas"
-                  style={{ fontSize: 24, letterSpacing: 3, color: "#fff" }}
-                >
-                  SPAK<span style={{ color: "#F57F17" }}>NATION</span>
+                  {t}
                 </span>
-              </div>
-              <p
-                style={{
-                  color: "#888",
-                  fontSize: "0.875rem",
-                  lineHeight: 1.75,
-                  maxWidth: 280,
-                }}
-              >
-                A safe, structured environment where potential is nurtured with
-                discipline, integrity and excellence.
-              </p>
-              <div
-                style={{
-                  display: "flex",
-                  gap: 8,
-                  marginTop: 20,
-                  flexWrap: "wrap",
-                }}
-              >
-                {["Acrobatics", "Music", "Dance"].map((t) => (
-                  <span
-                    key={t}
-                    style={{
-                      fontSize: "0.68rem",
-                      fontWeight: 600,
-                      color: "#888",
-                      background: "#2a2a2a",
-                      borderRadius: 100,
-                      padding: "4px 12px",
-                      border: "1px solid #333",
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4
-                className="bebas"
-                style={{
-                  fontSize: "1.1rem",
-                  color: "#fff",
-                  letterSpacing: 2,
-                  marginBottom: 18,
-                }}
-              >
-                Programs
-              </h4>
-              {[
-                "Acrobatics",
-                "Music",
-                "Gymnastics",
-                "Swimming",
-                "Performances",
-                "Kids Showcase",
-              ].map((p) => (
-                <a key={p} className="footer-link">
-                  {p}
-                </a>
-              ))}
-            </div>
-            <div>
-              <h4
-                className="bebas"
-                style={{
-                  fontSize: "1.1rem",
-                  color: "#fff",
-                  letterSpacing: 2,
-                  marginBottom: 18,
-                }}
-              >
-                Company
-              </h4>
-              {[
-                "About Us",
-                "Our Coaches",
-                "School Partnership",
-                "Showcase Events",
-                "Contact",
-              ].map((p) => (
-                <a key={p} className="footer-link">
-                  {p}
-                </a>
               ))}
             </div>
           </div>
+          <div>
+            <h4
+              className="bebas"
+              style={{
+                fontSize: "1.1rem",
+                color: "#fff",
+                letterSpacing: 2,
+                marginBottom: 18,
+              }}
+            >
+              Programs
+            </h4>
+            {[
+              "Acrobatics",
+              "Music",
+              "Gymnastics",
+              "Swimming",
+              "Performances",
+              "Kids Showcase",
+            ].map((p) => (
+              <a key={p} className="footer-link">
+                {p}
+              </a>
+            ))}
+          </div>
+          <div>
+            <h4
+              className="bebas"
+              style={{
+                fontSize: "1.1rem",
+                color: "#fff",
+                letterSpacing: 2,
+                marginBottom: 18,
+              }}
+            >
+              Company
+            </h4>
+            {[
+              "About Us",
+              "Our Coaches",
+              "School Partnership",
+              "Showcase Events",
+              "Contact",
+            ].map((p) => (
+              <a key={p} className="footer-link">
+                {p}
+              </a>
+            ))}
+          </div>
+        </div>
 
-          <div
-            style={{
-              borderTop: "1px solid #2a2a2a",
-              paddingTop: 28,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: 12,
-            }}
-          >
-            <p style={{ fontSize: "0.78rem", color: "#555" }}>
-              © 2025 Spaknation. All rights reserved.
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={10} fill="#F9A825" color="#F9A825" />
-              ))}
-              <span
-                style={{ fontSize: "0.75rem", color: "#555", marginLeft: 6 }}
-              >
-                Nurturing Excellence
-              </span>
-            </div>
+        <div
+          style={{
+            borderTop: "1px solid #2a2a2a",
+            paddingTop: 28,
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "28px 24px 0",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 12,
+          }}
+        >
+          <p style={{ fontSize: "0.78rem", color: "#555" }}>
+            © 2025 Spaknation. All rights reserved.
+          </p>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={10} fill="#F9A825" color="#F9A825" />
+            ))}
+            <span style={{ fontSize: "0.75rem", color: "#555", marginLeft: 6 }}>
+              Nurturing Excellence
+            </span>
           </div>
         </div>
       </footer>
-      {/* ===== AI CHATBOT ===== */}
+
       <AIChatbot />
     </div>
   );

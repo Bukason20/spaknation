@@ -1,17 +1,22 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Calendar,
   CheckCircle,
-  Globe,
-  Laptop,
   Mic,
   Sparkles,
   Star,
+  Play,
+  X,
 } from "lucide-react";
 import { Music, Users, Waves, Zap, Trophy } from "lucide-react";
 import Navbar from "../components/Navbar";
 import AIChatbot from "../components/aichatbot";
+
+// ─── REPLACE THESE IMAGE URLS WITH YOUR FACEBOOK PHOTOS ─────────────────────
+// Each image should show kids actually doing that discipline.
+// Ideal size: landscape, at least 600×350px.
 
 const ALL_PROGRAMS = [
   {
@@ -30,6 +35,10 @@ const ALL_PROGRAMS = [
     border: "#E9D5FF",
     iconBg: "#F3E8FF",
     tag: "",
+    image:
+      "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=600&q=80",
+    // TODO: Replace with a photo of your ballet students from Facebook
+    videoUrl: "", // Add your Facebook/YouTube video URL here
   },
   {
     icon: Zap,
@@ -47,6 +56,10 @@ const ALL_PROGRAMS = [
     border: "#FFCDD2",
     iconBg: "#FFEBEE",
     tag: "Most Popular",
+    image:
+      "https://images.unsplash.com/photo-1547153760-18fc86324498?w=600&q=80",
+    // TODO: Replace with your acrobatics students mid-flip from Facebook
+    videoUrl: "",
   },
   {
     icon: Star,
@@ -64,6 +77,10 @@ const ALL_PROGRAMS = [
     border: "#A7F3D0",
     iconBg: "#DCFCE7",
     tag: "",
+    image:
+      "https://images.unsplash.com/photo-1545959570-a94084071b5d?w=600&q=80",
+    // TODO: Replace with gymnastics training photo from Facebook
+    videoUrl: "",
   },
   {
     icon: Zap,
@@ -81,6 +98,10 @@ const ALL_PROGRAMS = [
     border: "#FFE082",
     iconBg: "#FFF3E0",
     tag: "",
+    image:
+      "https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?w=600&q=80",
+    // TODO: Replace with hip hop class or performance photo from Facebook
+    videoUrl: "",
   },
   {
     icon: Music,
@@ -98,6 +119,10 @@ const ALL_PROGRAMS = [
     border: "#FDE68A",
     iconBg: "#FEF3C7",
     tag: "",
+    image:
+      "https://images.unsplash.com/photo-1576758454260-00aa3e6efdf6?w=600&q=80",
+    // TODO: Replace with music class photo from Facebook
+    videoUrl: "",
   },
   {
     icon: Mic,
@@ -115,6 +140,10 @@ const ALL_PROGRAMS = [
     border: "#FBCFE8",
     iconBg: "#FCE7F3",
     tag: "",
+    image:
+      "https://images.unsplash.com/photo-1607081692251-c5f07c4e8e5d?w=600&q=80",
+    // TODO: Replace with singing/vocal coaching photo from Facebook
+    videoUrl: "",
   },
   {
     icon: Trophy,
@@ -132,6 +161,10 @@ const ALL_PROGRAMS = [
     border: "#A5F3FC",
     iconBg: "#CFFAFE",
     tag: "",
+    image:
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+    // TODO: Replace with taekwondo training photo from Facebook
+    videoUrl: "",
   },
   {
     icon: Waves,
@@ -149,6 +182,10 @@ const ALL_PROGRAMS = [
     border: "#BFDBFE",
     iconBg: "#DBEAFE",
     tag: "",
+    image:
+      "https://images.unsplash.com/photo-1472261604518-2b8e9d0a5b5e?w=600&q=80",
+    // TODO: Replace with swimming training photo from Facebook
+    videoUrl: "",
   },
   {
     icon: Users,
@@ -166,8 +203,13 @@ const ALL_PROGRAMS = [
     border: "#D9F99D",
     iconBg: "#ECFCCB",
     tag: "Leadership",
+    image:
+      "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=600&q=80",
+    // TODO: Replace with public speaking or presentation class photo from Facebook
+    videoUrl: "",
   },
 ];
+// ─────────────────────────────────────────────────────────────────────────────
 
 const SCHEDULE = [
   {
@@ -195,6 +237,7 @@ const SCHEDULE = [
 
 const ProgramsPage = () => {
   const navigate = useNavigate();
+  const [activeVideo, setActiveVideo] = useState(null); // stores program title of open video
 
   const handleEnroll = () => {
     navigate("/");
@@ -207,6 +250,15 @@ const ProgramsPage = () => {
     );
   };
 
+  const openVideo = (prog) => {
+    if (prog.videoUrl) {
+      setActiveVideo(prog);
+    } else {
+      // If no video yet, scroll to enroll
+      handleEnroll();
+    }
+  };
+
   return (
     <div
       style={{
@@ -217,6 +269,67 @@ const ProgramsPage = () => {
       }}
     >
       <Navbar />
+
+      {/* ===== VIDEO MODAL ===== */}
+      {activeVideo && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.8)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+          }}
+          onClick={() => setActiveVideo(null)}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 860,
+              position: "relative",
+              borderRadius: 20,
+              overflow: "hidden",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setActiveVideo(null)}
+              style={{
+                position: "absolute",
+                top: 12,
+                right: 12,
+                zIndex: 2,
+                background: "rgba(0,0,0,0.6)",
+                border: "none",
+                borderRadius: "50%",
+                width: 36,
+                height: 36,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <X size={18} color="#fff" />
+            </button>
+            <iframe
+              src={`${activeVideo.videoUrl}?autoplay=1`}
+              title={`${activeVideo.title} class at Spaknation`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                width: "100%",
+                aspectRatio: "16/9",
+                border: "none",
+                display: "block",
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* ===== HERO ===== */}
       <section
@@ -254,7 +367,7 @@ const ProgramsPage = () => {
         >
           <div
             className="live-badge"
-            style={{ marginBottom: 28, display: "inline-flex" }}
+            style={{ marginBottom: 24, display: "inline-flex" }}
           >
             <div className="live-dot" />
             <span
@@ -266,19 +379,20 @@ const ProgramsPage = () => {
                 color: "#E53935",
               }}
             >
-              All Programs · Port Harcourt
+              9 Disciplines · All Ages Welcome
             </span>
           </div>
+
           <h1
             className="bebas"
             style={{
-              fontSize: "clamp(2.8rem,7vw,6rem)",
-              lineHeight: 0.95,
+              fontSize: "clamp(3rem,8vw,7rem)",
+              lineHeight: 0.9,
               letterSpacing: 2,
               marginBottom: 24,
             }}
           >
-            <span style={{ color: "#1a1a1a" }}>NINE DISCIPLINES.</span>
+            <span style={{ color: "#1a1a1a" }}>OUR</span>
             <br />
             <span
               style={{
@@ -287,7 +401,7 @@ const ProgramsPage = () => {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              ONE INSTITUTION.
+              PROGRAMS
             </span>
           </h1>
           <p
@@ -336,6 +450,8 @@ const ProgramsPage = () => {
                     overflow: "hidden",
                     transition: "transform 0.3s, box-shadow 0.3s",
                     cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                   className="prog-card"
                   onMouseEnter={(e) => {
@@ -347,109 +463,201 @@ const ProgramsPage = () => {
                     e.currentTarget.style.boxShadow = "none";
                   }}
                 >
+                  {/* ── PROGRAM IMAGE BANNER ── */}
                   <div
                     style={{
-                      height: 6,
-                      background: `linear-gradient(90deg,${prog.accent},${prog.accent}88)`,
+                      position: "relative",
+                      height: 200,
+                      overflow: "hidden",
                     }}
-                  />
-                  <div style={{ padding: "28px 28px 32px" }}>
+                  >
+                    <img
+                      src={prog.image}
+                      alt={`${prog.title} program at Spaknation`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                        transition: "transform 0.4s",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.05)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
+                      /* TODO: Replace prog.image with your actual Facebook photo for this program */
+                    />
+                    {/* Accent bar at very top */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 5,
+                        background: `linear-gradient(90deg,${prog.accent},${prog.accent}88)`,
+                      }}
+                    />
+                    {/* Gradient overlay at bottom */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 80,
+                        background:
+                          "linear-gradient(to top,rgba(0,0,0,0.55),transparent)",
+                      }}
+                    />
+
+                    {/* Tag badge */}
                     {prog.tag && (
                       <div
                         style={{
-                          display: "inline-block",
-                          fontSize: "0.65rem",
+                          position: "absolute",
+                          top: 14,
+                          right: 14,
+                          fontSize: "0.62rem",
                           fontWeight: 800,
                           letterSpacing: "0.1em",
                           textTransform: "uppercase",
-                          color: prog.accent,
-                          background: `${prog.accent}14`,
+                          color: "#fff",
+                          background: prog.accent,
                           borderRadius: 100,
                           padding: "4px 12px",
-                          marginBottom: 14,
-                          border: `1.5px solid ${prog.accent}30`,
+                          boxShadow: `0 4px 12px ${prog.accent}55`,
                         }}
                       >
                         {prog.tag}
                       </div>
                     )}
+
+                    {/* Watch a class button (bottom of image) */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openVideo(prog);
+                      }}
+                      style={{
+                        position: "absolute",
+                        bottom: 14,
+                        left: 14,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        background: "rgba(255,255,255,0.15)",
+                        backdropFilter: "blur(6px)",
+                        border: "1px solid rgba(255,255,255,0.4)",
+                        borderRadius: 100,
+                        padding: "6px 14px",
+                        cursor: "pointer",
+                        color: "#fff",
+                        fontSize: "0.7rem",
+                        fontWeight: 700,
+                        fontFamily: "'Outfit',sans-serif",
+                        letterSpacing: "0.05em",
+                        transition: "background 0.2s",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.25)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.15)")
+                      }
+                    >
+                      <Play size={11} fill="#fff" color="#fff" />
+                      Watch a Class
+                      {/* TODO: Add videoUrl to this program in ALL_PROGRAMS to enable playback */}
+                    </button>
+                  </div>
+
+                  {/* ── Card content ── */}
+                  <div
+                    style={{
+                      padding: "24px 28px 32px",
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
                     <div
                       style={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: 18,
-                        background: prog.iconBg,
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        marginBottom: 16,
-                        border: `2px solid ${prog.accent}22`,
+                        gap: 10,
+                        marginBottom: 10,
                       }}
                     >
-                      <Icon size={26} color={prog.accent} />
+                      <div
+                        style={{
+                          width: 36,
+                          height: 36,
+                          borderRadius: 10,
+                          background: prog.iconBg,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <Icon size={18} color={prog.accent} />
+                      </div>
+                      <h3
+                        className="bebas"
+                        style={{
+                          fontSize: "1.5rem",
+                          color: "#1a1a1a",
+                          letterSpacing: 1,
+                          lineHeight: 1,
+                        }}
+                      >
+                        {prog.title}
+                      </h3>
                     </div>
-                    <h3
-                      className="bebas"
-                      style={{
-                        fontSize: "1.7rem",
-                        color: "#1a1a1a",
-                        letterSpacing: 1,
-                        marginBottom: 4,
-                      }}
-                    >
-                      {prog.title}
-                    </h3>
+
                     <p
                       style={{
-                        color: prog.accent,
-                        fontSize: "0.75rem",
+                        fontSize: "0.72rem",
                         fontWeight: 700,
+                        color: prog.accent,
                         textTransform: "uppercase",
                         letterSpacing: "0.08em",
-                        marginBottom: 12,
+                        marginBottom: 10,
                       }}
                     >
                       {prog.tagline}
                     </p>
+
                     <p
                       style={{
                         color: "#666",
                         fontSize: "0.875rem",
-                        lineHeight: 1.75,
+                        lineHeight: 1.7,
                         marginBottom: 20,
+                        flex: 1,
                       }}
                     >
                       {prog.desc}
                     </p>
 
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 8,
-                      }}
-                    >
+                    <div style={{ marginBottom: 20 }}>
                       {prog.highlights.map((h) => (
                         <div
                           key={h}
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            gap: 10,
+                            gap: 8,
+                            marginBottom: 6,
                           }}
                         >
-                          <CheckCircle
-                            size={14}
-                            color={prog.accent}
-                            style={{ flexShrink: 0 }}
-                          />
-                          <span
-                            style={{
-                              fontSize: "0.8rem",
-                              color: "#555",
-                              fontWeight: 500,
-                            }}
-                          >
+                          <CheckCircle size={13} color={prog.accent} />
+                          <span style={{ fontSize: "0.8rem", color: "#555" }}>
                             {h}
                           </span>
                         </div>
@@ -459,23 +667,32 @@ const ProgramsPage = () => {
                     <button
                       onClick={handleEnroll}
                       style={{
-                        marginTop: 24,
+                        width: "100%",
+                        padding: "12px",
+                        background: `${prog.accent}12`,
+                        border: `2px solid ${prog.accent}30`,
+                        borderRadius: 12,
+                        color: prog.accent,
+                        fontFamily: "'Outfit',sans-serif",
+                        fontWeight: 800,
+                        fontSize: "0.82rem",
+                        cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "center",
                         gap: 6,
-                        color: prog.accent,
-                        fontSize: "0.8rem",
-                        fontWeight: 700,
-                        background: `${prog.accent}10`,
-                        border: `1.5px solid ${prog.accent}25`,
-                        borderRadius: 100,
-                        padding: "8px 18px",
-                        cursor: "pointer",
-                        fontFamily: "'Outfit',sans-serif",
+                        transition: "background 0.2s",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.06em",
                       }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background = `${prog.accent}20`)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = `${prog.accent}12`)
+                      }
                     >
-                      Enroll in {prog.title}{" "}
-                      <ArrowRight size={13} color={prog.accent} />
+                      Enroll in {prog.title} <ArrowRight size={14} />
                     </button>
                   </div>
                 </div>
@@ -554,18 +771,10 @@ const ProgramsPage = () => {
                 </div>
                 <div
                   style={{
-                    width: 40,
-                    height: 3,
-                    background: s.color,
-                    borderRadius: 2,
-                    margin: "12px auto",
-                  }}
-                />
-                <div
-                  style={{
-                    fontSize: "1.05rem",
+                    fontSize: "1rem",
                     fontWeight: 700,
-                    color: "#1a1a1a",
+                    color: "#444",
+                    marginTop: 8,
                   }}
                 >
                   {s.time}
@@ -574,235 +783,118 @@ const ProgramsPage = () => {
             ))}
           </div>
 
-          {/* Online / Summer */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 24,
-              maxWidth: 640,
-              margin: "0 auto",
-            }}
-            className="grid-2"
-          >
-            {[
-              {
-                icon: Laptop,
-                label: "Online Classes Available",
-                sub: "Join from anywhere in Nigeria",
-                color: "#2563EB",
-                bg: "#EFF6FF",
-                border: "#BFDBFE",
-              },
-              {
-                icon: Globe,
-                label: "Summer Holiday School",
-                sub: "Special intensive programs during holidays",
-                color: "#16A34A",
-                bg: "#F0FFF4",
-                border: "#A7F3D0",
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.label}
-                  style={{
-                    background: item.bg,
-                    border: `2px solid ${item.border}`,
-                    borderRadius: 20,
-                    padding: "24px",
-                    display: "flex",
-                    gap: 16,
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 14,
-                      background: "#fff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      boxShadow: `0 4px 14px ${item.color}22`,
-                    }}
-                  >
-                    <Icon size={22} color={item.color} />
-                  </div>
-                  <div>
-                    <div
-                      style={{
-                        fontWeight: 700,
-                        color: "#1a1a1a",
-                        fontSize: "0.9rem",
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                    <div
-                      style={{
-                        color: "#888",
-                        fontSize: "0.78rem",
-                        marginTop: 4,
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {item.sub}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CTA ===== */}
-      <section
-        style={{
-          padding: "100px 0",
-          background:
-            "linear-gradient(135deg,#E53935 0%,#F57F17 50%,#F9A825 100%)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "radial-gradient(circle,rgba(255,255,255,0.1) 1px,transparent 1px)",
-            backgroundSize: "24px 24px",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            maxWidth: 700,
-            margin: "0 auto",
-            padding: "0 24px",
-            textAlign: "center",
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
-          <h2
-            className="bebas"
-            style={{
-              fontSize: "clamp(2.5rem,5vw,4.5rem)",
-              color: "#fff",
-              lineHeight: 0.95,
-              letterSpacing: 2,
-              marginBottom: 20,
-            }}
-          >
-            READY TO START
-            <br />
-            YOUR CHILD'S JOURNEY?
-          </h2>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.88)",
-              fontSize: "1.05rem",
-              lineHeight: 1.75,
-              maxWidth: 480,
-              margin: "0 auto 40px",
-            }}
-          >
-            Classes are held in Port Harcourt. Online classes are also
-            available. Enroll today and watch your child discover their
-            greatness.
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: 16,
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
+          <div style={{ textAlign: "center" }}>
             <button
+              className="btn-red"
+              style={{ padding: "16px 40px", fontSize: "0.95rem" }}
               onClick={handleEnroll}
-              style={{
-                background: "#fff",
-                color: "#E53935",
-                border: "none",
-                cursor: "pointer",
-                fontFamily: "'Outfit',sans-serif",
-                fontWeight: 800,
-                fontSize: "0.95rem",
-                padding: "16px 36px",
-                borderRadius: 100,
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                boxShadow: "0 12px 40px rgba(0,0,0,0.2)",
-              }}
             >
-              Enroll Now <ArrowRight size={18} />
-            </button>
-            <button
-              onClick={() => navigate("/about")}
-              style={{
-                background: "rgba(255,255,255,0.15)",
-                color: "#fff",
-                border: "2px solid rgba(255,255,255,0.4)",
-                cursor: "pointer",
-                fontFamily: "'Outfit',sans-serif",
-                fontWeight: 700,
-                fontSize: "0.95rem",
-                padding: "16px 36px",
-                borderRadius: 100,
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              About Spaknation
+              Book a Free Trial Class <ArrowRight size={16} />
             </button>
           </div>
         </div>
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer style={{ background: "#1a1a1a", padding: "40px 0 28px" }}>
+      <footer style={{ background: "#111", padding: "60px 0 40px" }}>
         <div
           style={{
             maxWidth: 1200,
             margin: "0 auto",
-            padding: "0 24px",
+            padding: "0 24px 40px",
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr 1fr",
+            gap: 60,
+          }}
+          className="grid-footer"
+        >
+          <div>
+            <div
+              className="bebas"
+              style={{
+                fontSize: "1.8rem",
+                color: "#fff",
+                letterSpacing: 2,
+                marginBottom: 12,
+              }}
+            >
+              SPAK<span style={{ color: "#E53935" }}>NATION</span>
+            </div>
+            <p
+              style={{
+                color: "#555",
+                fontSize: "0.875rem",
+                lineHeight: 1.75,
+                maxWidth: 300,
+              }}
+            >
+              Igniting the greatness in every child through world-class
+              performing arts in Port Harcourt, Nigeria.
+            </p>
+          </div>
+          <div>
+            <h4
+              className="bebas"
+              style={{
+                fontSize: "1.1rem",
+                color: "#fff",
+                letterSpacing: 2,
+                marginBottom: 18,
+              }}
+            >
+              Programs
+            </h4>
+            {[
+              "Acrobatics",
+              "Music",
+              "Gymnastics",
+              "Swimming",
+              "Performances",
+              "Kids Showcase",
+            ].map((p) => (
+              <a key={p} className="footer-link">
+                {p}
+              </a>
+            ))}
+          </div>
+          <div>
+            <h4
+              className="bebas"
+              style={{
+                fontSize: "1.1rem",
+                color: "#fff",
+                letterSpacing: 2,
+                marginBottom: 18,
+              }}
+            >
+              Company
+            </h4>
+            {[
+              "About Us",
+              "Our Coaches",
+              "School Partnership",
+              "Showcase Events",
+              "Contact",
+            ].map((p) => (
+              <a key={p} className="footer-link">
+                {p}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div
+          style={{
+            borderTop: "1px solid #2a2a2a",
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "24px 24px 0",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             flexWrap: "wrap",
-            gap: 16,
+            gap: 12,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                background: "linear-gradient(135deg,#E53935,#F57F17)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Sparkles size={16} color="#fff" />
-            </div>
-            <span
-              className="bebas"
-              style={{ fontSize: 22, letterSpacing: 3, color: "#fff" }}
-            >
-              SPAK<span style={{ color: "#F57F17" }}>NATION</span>
-            </span>
-          </div>
           <p style={{ fontSize: "0.78rem", color: "#555" }}>
             © 2025 Spaknation. All rights reserved.
           </p>
