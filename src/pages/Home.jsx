@@ -30,21 +30,6 @@ import GALLERY_PHOTOS from "../data/gallery";
 
 // Replace with your actual Facebook / YouTube video embed URL
 const SHOWCASE_VIDEO_URL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
-
-const ACTIVITY_PHOTOS = [
-  {
-    src: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=400&q=80",
-    title: "Safe & Structured",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=400&q=80",
-    title: "Excellence-Driven",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1607081692251-c5f07c4e8e5d?w=400&q=80",
-    title: "Community-First",
-  },
-];
 // ─────────────────────────────────────────────────────────────────────────────
 
 const Home = () => {
@@ -1426,7 +1411,7 @@ const Home = () => {
                 onClick={() => setVideoOpen(true)}
               >
                 <img
-                  src="/images/showcase-thumbnail.jpg"
+                  src="./ballet.jpg"
                   alt="Spaknation showcase event"
                   style={{
                     width: "100%",
